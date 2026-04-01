@@ -1,0 +1,137 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- fragment_saved.xml -->
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:background="@color/white">
+
+    <!-- Header -->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:gravity="center_vertical"
+        android:paddingHorizontal="16dp"
+        android:paddingTop="20dp"
+        android:paddingBottom="16dp">
+
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="@string/my_cookbooks"
+            android:textSize="20sp"
+            android:fontFamily="@font/poppins_bold"
+            android:textColor="@color/black" />
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/btn_create_collection"
+            style="@style/Widget.RecipeGenie.Button.Primary"
+            android:layout_width="wrap_content"
+            android:layout_height="36dp"
+            android:text="@string/create_collection"
+            android:textSize="12sp"
+            android:paddingHorizontal="14dp"
+            app:cornerRadius="18dp" />
+    </LinearLayout>
+
+    <!-- Collections Grid (pinned cookbooks) -->
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/rv_collections"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:paddingHorizontal="12dp"
+        android:clipToPadding="false"
+        android:layout_marginBottom="8dp"
+        app:layoutManager="androidx.recyclerview.widget.GridLayoutManager"
+        app:spanCount="2" />
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="0.5dp"
+        android:background="@color/gray_border"
+        android:layout_marginStart="16dp"
+        android:layout_marginEnd="16dp" />
+
+    <!-- All Saved Recipes label -->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:gravity="center_vertical"
+        android:paddingHorizontal="16dp"
+        android:paddingTop="14dp"
+        android:paddingBottom="10dp">
+
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="@string/saved_recipes"
+            android:textSize="15sp"
+            android:fontFamily="@font/poppins_semibold"
+            android:textColor="@color/black" />
+
+        <!-- Toggle list/grid -->
+        <ImageButton
+            android:id="@+id/btn_toggle_view"
+            android:layout_width="36dp"
+            android:layout_height="36dp"
+            android:src="@drawable/ic_grid"
+            android:background="@drawable/bg_circle_gray"
+            android:padding="8dp"
+            android:contentDescription="Toggle view" />
+    </LinearLayout>
+
+    <!-- Saved Recipes RecyclerView -->
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/rv_saved_recipes"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:paddingHorizontal="12dp"
+        android:paddingBottom="16dp"
+        android:clipToPadding="false"
+        app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager" />
+
+    <!-- Empty State -->
+    <LinearLayout
+        android:id="@+id/ll_saved_empty"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:orientation="vertical"
+        android:gravity="center"
+        android:visibility="gone">
+
+        <ImageView
+            android:layout_width="100dp"
+            android:layout_height="100dp"
+            android:src="@drawable/ic_heart_outline"
+            android:alpha="0.3"
+            android:contentDescription="No saved recipes"
+            android:layout_marginBottom="16dp" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="No saved recipes yet"
+            android:textSize="16sp"
+            android:fontFamily="@font/poppins_medium"
+            android:textColor="@color/gray_text"
+            android:layout_marginBottom="8dp" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Tap the heart on any recipe to save it here"
+            android:textSize="13sp"
+            android:textColor="@color/gray_hint"
+            android:gravity="center"
+            android:paddingHorizontal="40dp" />
+    </LinearLayout>
+
+</LinearLayout>

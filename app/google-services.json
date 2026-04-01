@@ -1,0 +1,47 @@
+{
+  "project_info": {
+    "project_number": "971992736377",
+    "project_id": "recipegenie-5bd43",
+    "storage_bucket": "recipegenie-5bd43.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:971992736377:android:700994d4ff58e68f37eaa8",
+        "android_client_info": {
+          "package_name": "com.example.recipegenie"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "971992736377-jcq37997743q75shnobde9uu7q7v275q.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.recipegenie",
+            "certificate_hash": "59c7021cf6f9312353f6adf9f6a916fcfbd538a7"
+          }
+        },
+        {
+          "client_id": "971992736377-lhenn98uco9310aihu4lcs7ev4vj2a1u.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDi1mzS4CLEv8ZYqlMq0ok30P6r7kWHqx4"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "971992736377-lhenn98uco9310aihu4lcs7ev4vj2a1u.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

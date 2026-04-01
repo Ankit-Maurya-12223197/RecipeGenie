@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layer-list xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <!-- Background gray fill -->
+    <item>
+        <shape android:shape="rectangle">
+            <solid android:color="@color/gray_border" />
+        </shape>
+    </item>
+
+    <!-- Centered icon placeholder using a simple circle + lines approximation -->
+    <item
+        android:gravity="center"
+        android:width="48dp"
+        android:height="48dp">
+        <shape android:shape="oval">
+            <solid android:color="@color/gray_hint" />
+        </shape>
+    </item>
+
+</layer-list>

@@ -1,0 +1,107 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">RecipeGenie</string>
+    <string name="tagline">Cook smart with what you have</string>
+
+    <!-- Splash -->
+    <string name="get_started">Get Started</string>
+    <string name="already_have_account">Already have an account? Sign in</string>
+
+    <!-- Login -->
+    <string name="welcome_back">Welcome back</string>
+    <string name="sign_in_to_account">Sign in to your account</string>
+    <string name="email_address">Email address</string>
+    <string name="password">Password</string>
+    <string name="forgot_password">Forgot password?</string>
+    <string name="sign_in">Sign in</string>
+    <string name="or">or</string>
+    <string name="continue_with_google">Continue with Google</string>
+    <string name="no_account">Don\'t have an account? Sign up</string>
+    <string name="create_account">Create Account</string>
+    <string name="full_name">Full name</string>
+    <string name="confirm_password">Confirm password</string>
+
+    <!-- Preferences -->
+    <string name="set_preferences">Set your preferences</string>
+    <string name="step_1_of_2">Step 1 of 2 — Diet type</string>
+    <string name="favourite_cuisines">Favourite cuisines</string>
+    <string name="allergies">Allergies</string>
+    <string name="continue_btn">Continue</string>
+
+    <!-- Home -->
+    <string name="good_morning">Good morning,</string>
+    <string name="search_recipes">Search recipes…</string>
+    <string name="trending_today">Trending today</string>
+    <string name="quick_meals">Quick meals</string>
+    <string name="cook">Cook</string>
+
+    <!-- Ingredients -->
+    <string name="whats_in_kitchen">What\'s in your kitchen?</string>
+    <string name="add_ingredients_hint">Add ingredients to find matching recipes</string>
+    <string name="type_ingredient">Type an ingredient…</string>
+    <string name="add">Add +</string>
+    <string name="find_recipes">Find recipes</string>
+    <string name="recipes_found">recipes found</string>
+    <string name="all_match">All match</string>
+    <string name="missing">Missing</string>
+
+    <!-- Recipe Detail -->
+    <string name="min">min</string>
+    <string name="servings">servings</string>
+    <string name="difficulty">difficulty</string>
+    <string name="rating">rating</string>
+    <string name="ingredients">Ingredients</string>
+    <string name="you_have_it">you have it</string>
+    <string name="missing_ingredient">missing</string>
+    <string name="steps">Steps</string>
+    <string name="nutrition">Nutrition</string>
+    <string name="start_cooking">Start cooking</string>
+    <string name="ask_ai_chef">Ask AI Chef</string>
+    <string name="save_recipe">Save recipe</string>
+
+    <!-- Cook Mode -->
+    <string name="step_of">Step %1$d of %2$d</string>
+    <string name="previous">Previous</string>
+    <string name="next_step">Next step</string>
+    <string name="tap_to_start">tap to start</string>
+    <string name="screen_stays_on">Screen stays on while cooking</string>
+
+    <!-- AI Chat -->
+    <string name="ai_chef_genie">AI Chef Genie</string>
+    <string name="powered_by_gemini">Powered by Gemini</string>
+    <string name="ask_anything">Ask anything…</string>
+    <string name="online">Online</string>
+
+    <!-- Nav -->
+    <string name="nav_home">Home</string>
+    <string name="nav_search">Search</string>
+    <string name="nav_saved">Saved</string>
+    <string name="nav_profile">Profile</string>
+
+    <!-- Saved -->
+    <string name="my_cookbooks">My cookbooks</string>
+    <string name="saved_recipes">Saved recipes</string>
+    <string name="create_collection">+ Create collection</string>
+
+    <!-- Profile -->
+    <string name="my_profile">My profile</string>
+    <string name="edit_profile">Edit profile</string>
+    <string name="dietary_preferences">Dietary preferences</string>
+    <string name="cooking_history">Cooking history</string>
+    <string name="notifications">Notifications</string>
+    <string name="help_support">Help &amp; Support</string>
+    <string name="sign_out">Sign out</string>
+    <string name="recipes_cooked">Recipes cooked</string>
+    <string name="favourites">Favourites</string>
+    <string name="streak">Day streak</string>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+
+    <string name="terms_text"><![CDATA[
+    I agree to the <font color="#F97316"><b>Terms of Service</b></font> and
+    <font color="#F97316"><b>Privacy Policy</b></font>
+    ]]></string>
+
+    <string name="web_client_id" translatable="false">971992736377-lhenn98uco9310aihu4lcs7ev4vj2a1u.apps.googleusercontent.com</string>
+
+</resources>

@@ -1,0 +1,253 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- fragment_profile.xml -->
+<ScrollView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/gray_bg">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:paddingBottom="32dp">
+
+        <!-- Profile Header Card -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:gravity="center"
+            android:background="@color/white"
+            android:paddingTop="40dp"
+            android:paddingBottom="24dp"
+            android:paddingHorizontal="16dp">
+
+            <!-- Avatar -->
+            <com.google.android.material.imageview.ShapeableImageView
+                android:id="@+id/iv_profile_avatar"
+                android:layout_width="80dp"
+                android:layout_height="80dp"
+                android:background="@color/orange_light"
+                app:shapeAppearanceOverlay="@style/ShapeAppearance.Circle"
+                android:layout_marginBottom="12dp" />
+
+            <TextView
+                android:id="@+id/tv_profile_name"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Arjun Kumar"
+                android:textSize="18sp"
+                android:fontFamily="@font/poppins_bold"
+                android:textColor="@color/black"
+                android:layout_marginBottom="4dp" />
+
+            <TextView
+                android:id="@+id/tv_profile_email"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="arjun@email.com"
+                android:textSize="13sp"
+                android:textColor="@color/gray_text"
+                android:layout_marginBottom="20dp" />
+
+            <!-- Stats Row -->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:background="@color/orange_extra_light"
+                android:padding="16dp"
+                android:gravity="center">
+
+                <LinearLayout android:layout_width="0dp" android:layout_height="wrap_content"
+                    android:layout_weight="1" android:orientation="vertical" android:gravity="center">
+                    <TextView android:id="@+id/tv_stat_cooked"
+                        android:layout_width="wrap_content" android:layout_height="wrap_content"
+                        android:text="24" android:textSize="22sp"
+                        android:fontFamily="@font/poppins_bold" android:textColor="@color/orange_dark" />
+                    <TextView android:layout_width="wrap_content" android:layout_height="wrap_content"
+                        android:text="@string/recipes_cooked" android:textSize="11sp"
+                        android:textColor="@color/orange_dark" android:gravity="center" />
+                </LinearLayout>
+
+                <View android:layout_width="0.5dp" android:layout_height="40dp"
+                    android:background="@color/orange_border" />
+
+                <LinearLayout android:layout_width="0dp" android:layout_height="wrap_content"
+                    android:layout_weight="1" android:orientation="vertical" android:gravity="center">
+                    <TextView android:id="@+id/tv_stat_saved"
+                        android:layout_width="wrap_content" android:layout_height="wrap_content"
+                        android:text="12" android:textSize="22sp"
+                        android:fontFamily="@font/poppins_bold" android:textColor="@color/orange_dark" />
+                    <TextView android:layout_width="wrap_content" android:layout_height="wrap_content"
+                        android:text="@string/favourites" android:textSize="11sp"
+                        android:textColor="@color/orange_dark" android:gravity="center" />
+                </LinearLayout>
+
+                <View android:layout_width="0.5dp" android:layout_height="40dp"
+                    android:background="@color/orange_border" />
+
+                <LinearLayout android:layout_width="0dp" android:layout_height="wrap_content"
+                    android:layout_weight="1" android:orientation="vertical" android:gravity="center">
+                    <TextView android:id="@+id/tv_stat_streak"
+                        android:layout_width="wrap_content" android:layout_height="wrap_content"
+                        android:text="7🔥" android:textSize="22sp"
+                        android:fontFamily="@font/poppins_bold" android:textColor="@color/orange_dark" />
+                    <TextView android:layout_width="wrap_content" android:layout_height="wrap_content"
+                        android:text="@string/streak" android:textSize="11sp"
+                        android:textColor="@color/orange_dark" android:gravity="center" />
+                </LinearLayout>
+            </LinearLayout>
+        </LinearLayout>
+
+        <View android:layout_width="match_parent" android:layout_height="8dp" />
+
+        <!-- Settings List Card -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:background="@color/white"
+            android:paddingVertical="8dp">
+
+            <!-- Edit Profile -->
+            <LinearLayout android:id="@+id/row_edit_profile"
+                android:layout_width="match_parent" android:layout_height="56dp"
+                android:orientation="horizontal" android:gravity="center_vertical"
+                android:paddingHorizontal="16dp" android:background="?attr/selectableItemBackground">
+                <ImageView android:layout_width="24dp" android:layout_height="24dp"
+                    android:src="@drawable/ic_person" android:layout_marginEnd="16dp"
+                    app:tint="@color/orange_primary" android:contentDescription="Edit profile" />
+                <TextView android:layout_width="0dp" android:layout_height="wrap_content"
+                    android:layout_weight="1" android:text="@string/edit_profile"
+                    android:textSize="14sp" android:textColor="@color/black" android:fontFamily="@font/poppins_medium" />
+                <ImageView android:layout_width="20dp" android:layout_height="20dp"
+                    android:src="@drawable/ic_chevron_right" app:tint="@color/gray_hint"
+                    android:contentDescription="Navigate" />
+            </LinearLayout>
+
+            <View android:layout_width="match_parent" android:layout_height="0.5dp"
+                android:background="@color/gray_border"
+                android:layout_marginStart="56dp"
+                android:layout_marginEnd="56dp" />
+
+            <!-- Dietary Preferences -->
+            <LinearLayout android:id="@+id/row_dietary"
+                android:layout_width="match_parent" android:layout_height="56dp"
+                android:orientation="horizontal" android:gravity="center_vertical"
+                android:paddingHorizontal="16dp" android:background="?attr/selectableItemBackground">
+                <ImageView android:layout_width="24dp" android:layout_height="24dp"
+                    android:src="@drawable/ic_leaf" android:layout_marginEnd="16dp"
+                    app:tint="@color/orange_primary" android:contentDescription="Dietary" />
+                <TextView android:layout_width="0dp" android:layout_height="wrap_content"
+                    android:layout_weight="1" android:text="@string/dietary_preferences"
+                    android:textSize="14sp" android:textColor="@color/black" android:fontFamily="@font/poppins_medium" />
+                <ImageView android:layout_width="20dp" android:layout_height="20dp"
+                    android:src="@drawable/ic_chevron_right" app:tint="@color/gray_hint"
+                    android:contentDescription="Navigate" />
+            </LinearLayout>
+
+            <View android:layout_width="match_parent" android:layout_height="0.5dp"
+                android:background="@color/gray_border"
+                android:layout_marginStart="56dp"
+                android:layout_marginEnd="56dp" />
+
+            <!-- Cooking History -->
+            <LinearLayout android:id="@+id/row_history"
+                android:layout_width="match_parent" android:layout_height="56dp"
+                android:orientation="horizontal" android:gravity="center_vertical"
+                android:paddingHorizontal="16dp" android:background="?attr/selectableItemBackground">
+                <ImageView android:layout_width="24dp" android:layout_height="24dp"
+                    android:src="@drawable/ic_history" android:layout_marginEnd="16dp"
+                    app:tint="@color/orange_primary" android:contentDescription="History" />
+                <TextView android:layout_width="0dp" android:layout_height="wrap_content"
+                    android:layout_weight="1" android:text="@string/cooking_history"
+                    android:textSize="14sp" android:textColor="@color/black" android:fontFamily="@font/poppins_medium" />
+                <ImageView android:layout_width="20dp" android:layout_height="20dp"
+                    android:src="@drawable/ic_chevron_right" app:tint="@color/gray_hint"
+                    android:contentDescription="Navigate" />
+            </LinearLayout>
+
+            <View android:layout_width="match_parent" android:layout_height="0.5dp"
+                android:background="@color/gray_border"
+                android:layout_marginStart="56dp"
+                android:layout_marginEnd="56dp" />
+
+            <!-- Notifications -->
+            <LinearLayout android:id="@+id/row_notifications"
+                android:layout_width="match_parent" android:layout_height="56dp"
+                android:orientation="horizontal" android:gravity="center_vertical"
+                android:paddingHorizontal="16dp" android:background="?attr/selectableItemBackground">
+                <ImageView android:layout_width="24dp" android:layout_height="24dp"
+                    android:src="@drawable/ic_bell" android:layout_marginEnd="16dp"
+                    app:tint="@color/orange_primary" android:contentDescription="Notifications" />
+                <TextView android:layout_width="0dp" android:layout_height="wrap_content"
+                    android:layout_weight="1" android:text="@string/notifications"
+                    android:textSize="14sp" android:textColor="@color/black" android:fontFamily="@font/poppins_medium" />
+                <com.google.android.material.switchmaterial.SwitchMaterial
+                    android:id="@+id/switch_notifications"
+                    android:layout_width="wrap_content" android:layout_height="wrap_content"
+                    android:checked="true"
+                    app:thumbTint="@color/white"
+                    app:trackTint="@color/selector_switch_track" />
+            </LinearLayout>
+
+            <View android:layout_width="match_parent" android:layout_height="0.5dp"
+                android:background="@color/gray_border"
+                android:layout_marginStart="56dp"
+                android:layout_marginEnd="56dp" />
+
+            <!-- Help & Support -->
+            <LinearLayout android:id="@+id/row_help"
+                android:layout_width="match_parent" android:layout_height="56dp"
+                android:orientation="horizontal" android:gravity="center_vertical"
+                android:paddingHorizontal="16dp" android:background="?attr/selectableItemBackground">
+                <ImageView android:layout_width="24dp" android:layout_height="24dp"
+                    android:src="@drawable/ic_help" android:layout_marginEnd="16dp"
+                    app:tint="@color/orange_primary" android:contentDescription="Help" />
+                <TextView android:layout_width="0dp" android:layout_height="wrap_content"
+                    android:layout_weight="1" android:text="@string/help_support"
+                    android:textSize="14sp" android:textColor="@color/black" android:fontFamily="@font/poppins_medium" />
+                <ImageView android:layout_width="20dp" android:layout_height="20dp"
+                    android:src="@drawable/ic_chevron_right" app:tint="@color/gray_hint"
+                    android:contentDescription="Navigate" />
+            </LinearLayout>
+        </LinearLayout>
+
+        <View android:layout_width="match_parent" android:layout_height="8dp" />
+
+        <!-- Sign Out -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@color/white"
+            android:paddingVertical="8dp">
+
+            <LinearLayout android:id="@+id/row_sign_out"
+                android:layout_width="match_parent" android:layout_height="56dp"
+                android:orientation="horizontal" android:gravity="center_vertical"
+                android:paddingHorizontal="16dp" android:background="?attr/selectableItemBackground">
+                <ImageView android:layout_width="24dp" android:layout_height="24dp"
+                    android:src="@drawable/ic_logout" android:layout_marginEnd="16dp"
+                    app:tint="@color/red_text" android:contentDescription="Sign out" />
+                <TextView android:layout_width="wrap_content" android:layout_height="wrap_content"
+                    android:text="@string/sign_out"
+                    android:textSize="14sp" android:textColor="@color/red_text"
+                    android:fontFamily="@font/poppins_medium" />
+            </LinearLayout>
+        </LinearLayout>
+
+        <!-- App Version -->
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:text="RecipeGenie v1.0.0"
+            android:textSize="11sp"
+            android:textColor="@color/gray_hint"
+            android:paddingTop="16dp" />
+
+    </LinearLayout>
+</ScrollView>

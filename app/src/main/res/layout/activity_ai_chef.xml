@@ -1,0 +1,235 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- activity_ai_chef.xml -->
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:background="@color/white">
+
+    <!-- Chat Header -->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:gravity="center_vertical"
+        android:background="@color/orange_extra_light"
+        android:paddingHorizontal="16dp"
+        android:paddingTop="48dp"
+        android:paddingBottom="12dp">
+
+        <ImageButton
+            android:id="@+id/btn_back_chat"
+            android:layout_width="36dp"
+            android:layout_height="36dp"
+            android:src="@drawable/ic_arrow_back"
+            android:background="@android:color/transparent"
+            android:contentDescription="Go back"
+            android:layout_marginEnd="12dp" />
+
+        <!-- AI Avatar -->
+        <androidx.cardview.widget.CardView
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            app:cardCornerRadius="12dp"
+            app:cardElevation="0dp"
+            app:cardBackgroundColor="@color/orange_primary"
+            android:layout_marginEnd="10dp">
+
+            <ImageView
+                android:layout_width="22dp"
+                android:layout_height="22dp"
+                android:layout_gravity="center"
+                android:src="@drawable/ic_chef_hat"
+                android:contentDescription="AI Chef" />
+        </androidx.cardview.widget.CardView>
+
+        <!-- Name & Status -->
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:orientation="vertical">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/ai_chef_genie"
+                android:textSize="15sp"
+                android:fontFamily="@font/poppins_semibold"
+                android:textColor="@color/orange_dark" />
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:gravity="center_vertical">
+
+                <View
+                    android:layout_width="6dp"
+                    android:layout_height="6dp"
+                    android:background="@drawable/bg_dot_green"
+                    android:layout_marginEnd="4dp" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/powered_by_gemini"
+                    android:textSize="11sp"
+                    android:textColor="@color/gray_text" />
+            </LinearLayout>
+        </LinearLayout>
+
+        <!-- Context Recipe Tag -->
+        <com.google.android.material.chip.Chip
+            android:id="@+id/chip_recipe_context"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Paneer Masala"
+            app:chipBackgroundColor="@color/white"
+            app:chipStrokeColor="@color/orange_border"
+            app:chipStrokeWidth="0.5dp"
+            android:textSize="11sp"
+            android:textColor="@color/orange_dark"
+            app:chipMinHeight="28dp" />
+    </LinearLayout>
+
+    <!-- Quick Suggestions Row -->
+    <HorizontalScrollView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/white"
+        android:paddingHorizontal="12dp"
+        android:paddingVertical="8dp"
+        android:scrollbars="none">
+
+        <LinearLayout
+            android:id="@+id/ll_suggestions"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <com.google.android.material.chip.Chip
+                android:id="@+id/chip_substitute"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Substitutes?"
+                style="@style/Widget.RecipeGenie.Chip"
+                android:layout_marginEnd="6dp" />
+
+            <com.google.android.material.chip.Chip
+                android:id="@+id/chip_less_spicy"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Make it less spicy"
+                style="@style/Widget.RecipeGenie.Chip"
+                android:layout_marginEnd="6dp" />
+
+            <com.google.android.material.chip.Chip
+                android:id="@+id/chip_nutrition"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Nutrition info"
+                style="@style/Widget.RecipeGenie.Chip"
+                android:layout_marginEnd="6dp" />
+
+            <com.google.android.material.chip.Chip
+                android:id="@+id/chip_double"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Double the recipe"
+                style="@style/Widget.RecipeGenie.Chip" />
+        </LinearLayout>
+    </HorizontalScrollView>
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="0.5dp"
+        android:background="@color/gray_border" />
+
+    <!-- Chat Messages RecyclerView -->
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/rv_chat"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:paddingHorizontal="12dp"
+        android:paddingTop="12dp"
+        android:paddingBottom="8dp"
+        android:clipToPadding="false"
+        android:background="@color/gray_bg"
+        app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager" />
+
+    <!-- Typing Indicator -->
+    <LinearLayout
+        android:id="@+id/ll_typing"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:gravity="center_vertical"
+        android:paddingHorizontal="16dp"
+        android:paddingVertical="8dp"
+        android:background="@color/gray_bg"
+        android:visibility="gone">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="AI Chef is thinking..."
+            android:textSize="12sp"
+            android:textColor="@color/gray_text"
+            android:fontFamily="@font/poppins"
+            android:layout_marginEnd="8dp" />
+
+        <com.google.android.material.progressindicator.CircularProgressIndicator
+            android:layout_width="16dp"
+            android:layout_height="16dp"
+            app:indicatorSize="16dp"
+            app:trackThickness="2dp"
+            app:indicatorColor="@color/orange_primary" />
+    </LinearLayout>
+
+    <!-- Input Bar -->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:gravity="center_vertical"
+        android:background="@color/white"
+        android:paddingHorizontal="12dp"
+        android:paddingVertical="10dp"
+        android:paddingBottom="28dp">
+
+        <!-- Text Input -->
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/til_message"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            style="@style/Widget.RecipeGenie.EditText"
+            android:hint="@string/ask_anything"
+            android:layout_marginEnd="8dp">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/et_message"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:inputType="textCapSentences|textMultiLine"
+                android:maxLines="4"
+                android:textSize="14sp" />
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <!-- Send Button -->
+        <com.google.android.material.floatingactionbutton.FloatingActionButton
+            android:id="@+id/fab_send"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/ic_send"
+            app:backgroundTint="@color/orange_primary"
+            app:tint="@color/white"
+            app:fabSize="mini"
+            android:contentDescription="Send message" />
+    </LinearLayout>
+
+</LinearLayout>

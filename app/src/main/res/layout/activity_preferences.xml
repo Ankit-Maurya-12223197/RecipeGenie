@@ -1,0 +1,263 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- activity_preferences.xml -->
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:background="@color/white">
+
+    <!-- Top Progress Bar -->
+    <com.google.android.material.progressindicator.LinearProgressIndicator
+        android:id="@+id/progress_step"
+        android:layout_width="match_parent"
+        android:layout_height="4dp"
+        android:progress="50"
+        app:indicatorColor="@color/orange_primary"
+        app:trackColor="@color/orange_extra_light"
+        app:trackThickness="4dp" />
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:fillViewport="true">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:paddingHorizontal="20dp"
+            android:paddingTop="24dp"
+            android:paddingBottom="16dp">
+
+            <!-- Title + Step -->
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/set_preferences"
+                android:textSize="20sp"
+                android:fontFamily="@font/poppins_bold"
+                android:textColor="@color/black"
+                android:layout_marginBottom="4dp" />
+
+            <TextView
+                android:id="@+id/tv_step_indicator"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/step_1_of_2"
+                android:textSize="13sp"
+                android:fontFamily="@font/poppins"
+                android:textColor="@color/gray_text"
+                android:layout_marginBottom="24dp" />
+
+            <!-- Diet Type Section -->
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Diet type"
+                android:textSize="14sp"
+                android:fontFamily="@font/poppins_medium"
+                android:textColor="@color/black"
+                android:layout_marginBottom="10dp" />
+
+            <com.google.android.material.chip.ChipGroup
+                android:id="@+id/chip_group_diet"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:singleSelection="true"
+                android:layout_marginBottom="24dp">
+
+                <com.google.android.material.chip.Chip
+                    android:id="@+id/chip_vegetarian"
+                    style="@style/Widget.RecipeGenie.Chip"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Vegetarian"
+                    android:checkable="true" />
+
+                <com.google.android.material.chip.Chip
+                    android:id="@+id/chip_vegan"
+                    style="@style/Widget.RecipeGenie.Chip"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Vegan"
+                    android:checkable="true" />
+
+                <com.google.android.material.chip.Chip
+                    android:id="@+id/chip_gluten_free"
+                    style="@style/Widget.RecipeGenie.Chip"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Gluten-free"
+                    android:checkable="true" />
+
+                <com.google.android.material.chip.Chip
+                    android:id="@+id/chip_keto"
+                    style="@style/Widget.RecipeGenie.Chip"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Keto"
+                    android:checkable="true" />
+
+                <com.google.android.material.chip.Chip
+                    android:id="@+id/chip_non_veg"
+                    style="@style/Widget.RecipeGenie.Chip"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Non-vegetarian"
+                    android:checkable="true" />
+            </com.google.android.material.chip.ChipGroup>
+
+            <!-- Favourite Cuisines Section -->
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/favourite_cuisines"
+                android:textSize="14sp"
+                android:fontFamily="@font/poppins_medium"
+                android:textColor="@color/black"
+                android:layout_marginBottom="10dp" />
+
+            <com.google.android.material.chip.ChipGroup
+                android:id="@+id/chip_group_cuisine"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:singleSelection="false"
+                android:layout_marginBottom="24dp">
+
+                <com.google.android.material.chip.Chip
+                    android:id="@+id/chip_indian"
+                    style="@style/Widget.RecipeGenie.Chip"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Indian"
+                    android:checkable="true" />
+
+                <com.google.android.material.chip.Chip
+                    android:id="@+id/chip_italian"
+                    style="@style/Widget.RecipeGenie.Chip"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Italian"
+                    android:checkable="true" />
+
+                <com.google.android.material.chip.Chip
+                    android:id="@+id/chip_chinese"
+                    style="@style/Widget.RecipeGenie.Chip"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Chinese"
+                    android:checkable="true" />
+
+                <com.google.android.material.chip.Chip
+                    android:id="@+id/chip_mexican"
+                    style="@style/Widget.RecipeGenie.Chip"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Mexican"
+                    android:checkable="true" />
+
+                <com.google.android.material.chip.Chip
+                    android:id="@+id/chip_thai"
+                    style="@style/Widget.RecipeGenie.Chip"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Thai"
+                    android:checkable="true" />
+
+                <com.google.android.material.chip.Chip
+                    android:id="@+id/chip_mediterranean"
+                    style="@style/Widget.RecipeGenie.Chip"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Mediterranean"
+                    android:checkable="true" />
+            </com.google.android.material.chip.ChipGroup>
+
+            <!-- Allergies Section -->
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/allergies"
+                android:textSize="14sp"
+                android:fontFamily="@font/poppins_medium"
+                android:textColor="@color/black"
+                android:layout_marginBottom="10dp" />
+
+            <com.google.android.material.chip.ChipGroup
+                android:id="@+id/chip_group_allergy"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:singleSelection="false"
+                android:layout_marginBottom="24dp">
+
+                <com.google.android.material.chip.Chip
+                    android:id="@+id/chip_peanuts"
+                    style="@style/Widget.MaterialComponents.Chip.Choice"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Peanuts"
+                    app:chipBackgroundColor="@color/gray_bg"
+                    android:checkable="true" />
+
+                <com.google.android.material.chip.Chip
+                    android:id="@+id/chip_dairy"
+                    style="@style/Widget.MaterialComponents.Chip.Choice"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Dairy"
+                    app:chipBackgroundColor="@color/gray_bg"
+                    android:checkable="true" />
+
+                <com.google.android.material.chip.Chip
+                    android:id="@+id/chip_eggs"
+                    style="@style/Widget.MaterialComponents.Chip.Choice"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Eggs"
+                    app:chipBackgroundColor="@color/gray_bg"
+                    android:checkable="true" />
+
+                <com.google.android.material.chip.Chip
+                    android:id="@+id/chip_soy"
+                    style="@style/Widget.MaterialComponents.Chip.Choice"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Soy"
+                    app:chipBackgroundColor="@color/gray_bg"
+                    android:checkable="true" />
+
+                <com.google.android.material.chip.Chip
+                    android:id="@+id/chip_wheat"
+                    style="@style/Widget.MaterialComponents.Chip.Choice"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Wheat"
+                    app:chipBackgroundColor="@color/gray_bg"
+                    android:checkable="true" />
+            </com.google.android.material.chip.ChipGroup>
+
+        </LinearLayout>
+    </ScrollView>
+
+    <!-- Bottom Button -->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:paddingHorizontal="20dp"
+        android:paddingBottom="24dp"
+        android:paddingTop="12dp"
+        android:background="@color/white">
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/btn_continue"
+            style="@style/Widget.RecipeGenie.Button.Primary"
+            android:layout_width="match_parent"
+            android:layout_height="52dp"
+            android:text="@string/continue_btn" />
+    </LinearLayout>
+
+</LinearLayout>

@@ -1,0 +1,187 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- fragment_ingredients.xml -->
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:background="@color/white">
+
+    <!-- Header -->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:paddingHorizontal="16dp"
+        android:paddingTop="20dp"
+        android:paddingBottom="12dp"
+        android:background="@color/white">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/whats_in_kitchen"
+            android:textSize="20sp"
+            android:fontFamily="@font/poppins_bold"
+            android:textColor="@color/black"
+            android:layout_marginBottom="4dp" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/add_ingredients_hint"
+            android:textSize="13sp"
+            android:textColor="@color/gray_text"
+            android:layout_marginBottom="16dp" />
+
+        <!-- Input Row -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:gravity="center_vertical"
+            android:layout_marginBottom="12dp">
+
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/til_ingredient"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                style="@style/Widget.RecipeGenie.EditText"
+                android:hint="@string/type_ingredient"
+                android:layout_marginEnd="8dp">
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/et_ingredient"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:inputType="textCapWords"
+                    android:imeOptions="actionDone"
+                    android:textSize="14sp" />
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/btn_add_ingredient"
+                style="@style/Widget.RecipeGenie.Button.Primary"
+                android:layout_width="wrap_content"
+                android:layout_height="48dp"
+                android:text="@string/add"
+                android:paddingHorizontal="16dp" />
+        </LinearLayout>
+
+        <!-- Ingredient Chips -->
+        <com.google.android.material.chip.ChipGroup
+            android:id="@+id/chip_group_ingredients"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="16dp"
+            app:chipSpacingVertical="4dp" />
+
+        <!-- Find Recipes Button -->
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/btn_find_recipes"
+            style="@style/Widget.RecipeGenie.Button.Primary"
+            android:layout_width="match_parent"
+            android:layout_height="52dp"
+            android:text="@string/find_recipes"
+            android:layout_marginBottom="4dp" />
+    </LinearLayout>
+
+    <!-- Divider -->
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="0.5dp"
+        android:background="@color/gray_border" />
+
+    <!-- Results Header -->
+    <LinearLayout
+        android:id="@+id/ll_results_header"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:gravity="center_vertical"
+        android:paddingHorizontal="16dp"
+        android:paddingTop="14dp"
+        android:paddingBottom="8dp"
+        android:visibility="gone">
+
+        <TextView
+            android:id="@+id/tv_results_count"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="4 recipes found"
+            android:textSize="15sp"
+            android:fontFamily="@font/poppins_semibold"
+            android:textColor="@color/black" />
+
+        <!-- Sort Button -->
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/btn_sort"
+            style="@style/Widget.RecipeGenie.Button.Ghost"
+            android:layout_width="wrap_content"
+            android:layout_height="36dp"
+            android:text="Sort"
+            app:icon="@drawable/ic_sort"
+            app:iconSize="16dp" />
+    </LinearLayout>
+
+    <!-- Loading -->
+    <com.google.android.material.progressindicator.LinearProgressIndicator
+        android:id="@+id/progress_search"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:visibility="gone"
+        app:indicatorColor="@color/orange_primary"
+        app:trackColor="@color/orange_extra_light" />
+
+    <!-- Empty State -->
+    <LinearLayout
+        android:id="@+id/ll_empty_state"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:orientation="vertical"
+        android:gravity="center"
+        android:visibility="visible">
+
+        <ImageView
+            android:layout_width="120dp"
+            android:layout_height="120dp"
+            android:src="@drawable/ic_ingredients_empty"
+            android:contentDescription="Add ingredients"
+            android:layout_marginBottom="16dp" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Add some ingredients"
+            android:textSize="16sp"
+            android:fontFamily="@font/poppins_medium"
+            android:textColor="@color/black"
+            android:layout_marginBottom="6dp" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="We'll find recipes you can make right now"
+            android:textSize="13sp"
+            android:textColor="@color/gray_text"
+            android:gravity="center"
+            android:paddingHorizontal="32dp" />
+    </LinearLayout>
+
+    <!-- Results RecyclerView -->
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/rv_results"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:paddingHorizontal="16dp"
+        android:paddingBottom="16dp"
+        android:clipToPadding="false"
+        android:visibility="gone"
+        app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager" />
+
+</LinearLayout>

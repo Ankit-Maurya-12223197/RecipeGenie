@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- activity_splash.xml -->
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:gravity="center"
+    android:background="@color/orange_extra_light"
+    android:paddingHorizontal="32dp">
+
+    <!-- Logo Container -->
+    <androidx.cardview.widget.CardView
+        android:id="@+id/cv_logo"
+        android:layout_width="96dp"
+        android:layout_height="96dp"
+        app:cardCornerRadius="24dp"
+        app:cardElevation="0dp"
+        app:cardBackgroundColor="@color/orange_primary"
+        android:layout_marginBottom="20dp">
+
+        <ImageView
+            android:layout_width="56dp"
+            android:layout_height="56dp"
+            android:layout_gravity="center"
+            android:src="@drawable/ic_chef_hat"
+            android:contentDescription="RecipeGenie logo" />
+    </androidx.cardview.widget.CardView>
+
+    <!-- App Name -->
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/app_name"
+        android:textSize="28sp"
+        android:fontFamily="@font/poppins_bold"
+        android:textColor="@color/orange_dark"
+        android:layout_marginBottom="8dp" />
+
+    <!-- Tagline -->
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/tagline"
+        android:textSize="14sp"
+        android:fontFamily="@font/poppins"
+        android:textColor="@color/orange_dark"
+        android:alpha="0.7"
+        android:gravity="center"
+        android:layout_marginBottom="48dp" />
+
+    <!-- Food illustration placeholder -->
+    <ImageView
+        android:id="@+id/iv_food_illustration"
+        android:layout_width="220dp"
+        android:layout_height="180dp"
+        android:src="@drawable/ic_food_bowl"
+        android:contentDescription="Food illustration"
+        android:layout_marginBottom="48dp" />
+
+    <!-- Get Started Button -->
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/btn_get_started"
+        style="@style/Widget.RecipeGenie.Button.Primary"
+        android:layout_width="match_parent"
+        android:layout_height="52dp"
+        android:text="@string/get_started"
+        android:textSize="16sp"
+        android:layout_marginBottom="16dp" />
+
+    <!-- Sign In Link -->
+    <TextView
+        android:id="@+id/tv_sign_in_link"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/already_have_account"
+        android:textSize="13sp"
+        android:textColor="@color/orange_primary"
+        android:fontFamily="@font/poppins"
+        android:padding="8dp" />
+
+</LinearLayout>

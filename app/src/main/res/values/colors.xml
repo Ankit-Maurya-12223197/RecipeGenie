@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="orange_primary">#F97316</color>
+    <color name="orange_dark">#C2410C</color>
+    <color name="orange_light">#FED7AA</color>
+    <color name="orange_extra_light">#FFF5F0</color>
+    <color name="orange_border">#FDBA74</color>
+
+    <color name="white">#FFFFFF</color>
+    <color name="black">#1C1C1E</color>
+    <color name="gray_bg">#F5F5F5</color>
+    <color name="gray_border">#EEEEEE</color>
+    <color name="gray_text">#888888</color>
+    <color name="gray_hint">#AAAAAA</color>
+    <color name="gray_dark">#444444</color>
+
+    <color name="green_light">#DCFCE7</color>
+    <color name="green_text">#166534</color>
+    <color name="green_dot">#4ADE80</color>
+
+    <color name="yellow_light">#FEF9C3</color>
+    <color name="yellow_text">#854D0E</color>
+
+    <color name="red_light">#FCA5A5</color>
+    <color name="red_text">#B91C1C</color>
+
+    <color name="dark_bg">#1A1A1E</color>
+    <color name="dark_card">#2C2C2E</color>
+    <color name="dark_border">#444444</color>
+    <color name="dark_text">#FFFFFF</color>
+    <color name="dark_hint">#888888</color>
+
+    <color name="star_yellow">#F97316</color>
+    <color name="google_red">#EA4335</color>
+    <color name="nav_item_color">#F97316</color>
+</resources>

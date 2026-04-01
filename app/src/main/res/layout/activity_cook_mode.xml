@@ -1,0 +1,202 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- activity_cook_mode.xml -->
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:background="@color/dark_bg"
+    android:keepScreenOn="true">
+
+    <!-- Top Bar -->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:gravity="center_vertical"
+        android:paddingHorizontal="16dp"
+        android:paddingTop="48dp"
+        android:paddingBottom="16dp">
+
+        <ImageButton
+            android:id="@+id/btn_exit_cook"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:src="@drawable/ic_close_white"
+            android:background="@drawable/bg_circle_dark"
+            android:contentDescription="Exit cook mode" />
+
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="Cook mode"
+            android:textSize="16sp"
+            android:fontFamily="@font/poppins_medium"
+            android:textColor="@color/dark_text"
+            android:gravity="center" />
+
+        <!-- Voice Toggle -->
+        <ImageButton
+            android:id="@+id/btn_voice"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:src="@drawable/ic_mic"
+            android:background="@drawable/bg_circle_dark"
+            android:contentDescription="Voice control" />
+    </LinearLayout>
+
+    <!-- Step Progress Indicator -->
+    <TextView
+        android:id="@+id/tv_step_progress"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
+        android:text="Step 2 of 6"
+        android:textSize="13sp"
+        android:textColor="@color/dark_hint"
+        android:fontFamily="@font/poppins"
+        android:letterSpacing="0.08"
+        android:textAllCaps="true"
+        android:layout_marginBottom="24dp" />
+
+    <!-- Step Instruction Card -->
+    <androidx.cardview.widget.CardView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginHorizontal="16dp"
+        android:layout_marginBottom="32dp"
+        app:cardCornerRadius="16dp"
+        app:cardElevation="0dp"
+        app:cardBackgroundColor="@color/dark_card">
+
+        <TextView
+            android:id="@+id/tv_step_instruction"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Sauté onion, garlic and ginger in oil over medium heat until golden brown and fragrant"
+            android:textSize="18sp"
+            android:fontFamily="@font/poppins_medium"
+            android:textColor="@color/dark_text"
+            android:lineSpacingMultiplier="1.5"
+            android:gravity="center"
+            android:padding="24dp" />
+    </androidx.cardview.widget.CardView>
+
+    <!-- Timer Circle -->
+    <FrameLayout
+        android:layout_width="140dp"
+        android:layout_height="140dp"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginBottom="24dp">
+
+        <!-- Circular Progress -->
+        <com.google.android.material.progressindicator.CircularProgressIndicator
+            android:id="@+id/timer_progress"
+            android:layout_width="140dp"
+            android:layout_height="140dp"
+            android:layout_gravity="center"
+            android:progress="100"
+            app:indicatorColor="@color/orange_primary"
+            app:trackColor="@color/dark_border"
+            app:trackThickness="6dp"
+            app:indicatorSize="140dp" />
+
+        <!-- Timer Text -->
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:orientation="vertical"
+            android:gravity="center">
+
+            <TextView
+                android:id="@+id/tv_timer"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="5:00"
+                android:textSize="28sp"
+                android:fontFamily="@font/poppins_bold"
+                android:textColor="@color/dark_text" />
+
+            <TextView
+                android:id="@+id/tv_timer_label"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/tap_to_start"
+                android:textSize="11sp"
+                android:textColor="@color/orange_primary"
+                android:fontFamily="@font/poppins" />
+        </LinearLayout>
+    </FrameLayout>
+
+    <!-- Step Tip -->
+    <TextView
+        android:id="@+id/tv_step_tip"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Medium heat — stir occasionally to prevent burning"
+        android:textSize="13sp"
+        android:textColor="@color/dark_hint"
+        android:gravity="center"
+        android:paddingHorizontal="32dp"
+        android:layout_marginBottom="32dp" />
+
+    <!-- Spacer -->
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1" />
+
+    <!-- Navigation Buttons -->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:gravity="center"
+        android:paddingHorizontal="24dp"
+        android:paddingBottom="48dp"
+        android:layout_marginBottom="0dp">
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/btn_previous_step"
+            style="@style/Widget.MaterialComponents.Button.OutlinedButton"
+            android:layout_width="0dp"
+            android:layout_height="52dp"
+            android:layout_weight="1"
+            android:text="@string/previous"
+            android:textColor="@color/dark_hint"
+            app:strokeColor="@color/dark_border"
+            app:cornerRadius="26dp"
+            android:layout_marginEnd="12dp" />
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/btn_next_step"
+            style="@style/Widget.RecipeGenie.Button.Primary"
+            android:layout_width="0dp"
+            android:layout_height="52dp"
+            android:layout_weight="2"
+            android:text="@string/next_step" />
+    </LinearLayout>
+
+    <!-- Step Dot Indicators -->
+    <LinearLayout
+        android:id="@+id/ll_step_dots"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
+        android:orientation="horizontal"
+        android:paddingBottom="32dp" />
+
+    <!-- Screen On Indicator -->
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
+        android:text="@string/screen_stays_on"
+        android:textSize="11sp"
+        android:textColor="@color/dark_hint"
+        android:paddingBottom="24dp" />
+
+</LinearLayout>

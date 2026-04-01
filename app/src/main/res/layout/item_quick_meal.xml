@@ -1,0 +1,55 @@
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="horizontal"
+    android:gravity="center_vertical"
+    android:background="@drawable/bg_quick_meal_card"
+    android:paddingHorizontal="14dp"
+    android:paddingVertical="12dp"
+    android:layout_marginBottom="8dp">
+
+    <TextView
+        android:id="@+id/tv_quick_emoji"
+        android:layout_width="40dp"
+        android:layout_height="40dp"
+        android:gravity="center"
+        android:text="🍳"
+        android:textSize="22sp"
+        android:layout_marginEnd="12dp" />
+
+    <LinearLayout
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:orientation="vertical">
+
+        <TextView
+            android:id="@+id/tv_quick_title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Masala Omelette"
+            android:textSize="14sp"
+            android:fontFamily="@font/poppins_medium"
+            android:textColor="@color/black" />
+
+        <TextView
+            android:id="@+id/tv_quick_meta"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="10 min · 3 ingredients"
+            android:textSize="12sp"
+            android:textColor="@color/gray_text" />
+    </LinearLayout>
+
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/btn_quick_cook"
+        style="@style/Widget.RecipeGenie.Button.Primary"
+        android:layout_width="wrap_content"
+        android:layout_height="36dp"
+        android:text="@string/cook"
+        android:textSize="12sp"
+        android:paddingHorizontal="14dp"
+        app:cornerRadius="18dp" />
+</LinearLayout>
