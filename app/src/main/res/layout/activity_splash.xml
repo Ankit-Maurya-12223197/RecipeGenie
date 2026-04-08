@@ -59,25 +59,5 @@
         android:contentDescription="Food illustration"
         android:layout_marginBottom="48dp" />
 
-    <!-- Get Started Button -->
-    <com.google.android.material.button.MaterialButton
-        android:id="@+id/btn_get_started"
-        style="@style/Widget.RecipeGenie.Button.Primary"
-        android:layout_width="match_parent"
-        android:layout_height="52dp"
-        android:text="@string/get_started"
-        android:textSize="16sp"
-        android:layout_marginBottom="16dp" />
-
-    <!-- Sign In Link -->
-    <TextView
-        android:id="@+id/tv_sign_in_link"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="@string/already_have_account"
-        android:textSize="13sp"
-        android:textColor="@color/orange_primary"
-        android:fontFamily="@font/poppins"
-        android:padding="8dp" />
 
 </LinearLayout>

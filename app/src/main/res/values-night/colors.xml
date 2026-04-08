@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="orange_primary">#FB923C</color>
+    <color name="orange_dark">#FDBA74</color>
+    <color name="orange_light">#7C2D12</color>
+    <color name="orange_extra_light">#3B1C10</color>
+    <color name="orange_border">#9A3412</color>
+
+    <color name="white">#121212</color>
+    <color name="black">#F5F5F5</color>
+    <color name="gray_bg">#1B1B1D</color>
+    <color name="gray_border">#2D2D31</color>
+    <color name="gray_text">#B3B3B8</color>
+    <color name="gray_hint">#8A8A91</color>
+    <color name="gray_dark">#E8E8EA</color>
+
+    <color name="green_light">#123524</color>
+    <color name="green_text">#86EFAC</color>
+    <color name="green_dot">#4ADE80</color>
+
+    <color name="yellow_light">#3A2F0D</color>
+    <color name="yellow_text">#FDE68A</color>
+
+    <color name="red_light">#4A1717</color>
+    <color name="red_text">#FCA5A5</color>
+
+    <color name="dark_bg">#101012</color>
+    <color name="dark_card">#1A1A1D</color>
+    <color name="dark_border">#2D2D31</color>
+    <color name="dark_text">#F5F5F5</color>
+    <color name="dark_hint">#A1A1AA</color>
+
+    <color name="star_yellow">#FB923C</color>
+    <color name="google_red">#EA4335</color>
+    <color name="nav_item_color">#FB923C</color>
+</resources>

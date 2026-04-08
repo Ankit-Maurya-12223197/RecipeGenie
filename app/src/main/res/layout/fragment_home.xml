@@ -62,42 +62,6 @@
                     app:shapeAppearanceOverlay="@style/ShapeAppearance.Circle" />
             </LinearLayout>
 
-            <!-- Search Bar -->
-            <com.google.android.material.card.MaterialCardView
-                android:id="@+id/search_bar"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginBottom="12dp"
-                app:cardBackgroundColor="@color/white"
-                app:cardCornerRadius="16dp"
-                app:cardElevation="0dp"
-                app:strokeColor="@color/gray_border"
-                app:strokeWidth="1dp">
-
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:gravity="center_vertical"
-                    android:minHeight="52dp"
-                    android:orientation="horizontal"
-                    android:paddingHorizontal="16dp">
-
-                    <ImageView
-                        android:layout_width="20dp"
-                        android:layout_height="20dp"
-                        android:contentDescription="@string/search_recipes"
-                        android:src="@drawable/ic_search"
-                        app:tint="@color/gray_text" />
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginStart="12dp"
-                        android:text="@string/search_recipes"
-                        android:textColor="@color/gray_hint"
-                        android:textSize="14sp" />
-                </LinearLayout>
-            </com.google.android.material.card.MaterialCardView>
 
             <!-- Category Chips -->
             <HorizontalScrollView
@@ -114,7 +78,7 @@
 
                     <com.google.android.material.chip.Chip
                         android:id="@+id/chip_all"
-                        style="@style/Widget.RecipeGenie.Chip.Selected"
+                        style="@style/Widget.RecipeGenie.Chip"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="All"
@@ -191,14 +155,7 @@
                     android:fontFamily="@font/poppins_semibold"
                     android:textColor="@color/black" />
 
-                <TextView
-                    android:id="@+id/tv_see_all_trending"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="See all"
-                    android:textSize="13sp"
-                    android:textColor="@color/orange_primary"
-                    android:padding="4dp" />
+
             </LinearLayout>
 
             <!-- Trending Recipes Horizontal RecyclerView -->
@@ -231,14 +188,7 @@
                     android:fontFamily="@font/poppins_semibold"
                     android:textColor="@color/black" />
 
-                <TextView
-                    android:id="@+id/tv_see_all_quick"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="See all"
-                    android:textSize="13sp"
-                    android:textColor="@color/orange_primary"
-                    android:padding="4dp" />
+
             </LinearLayout>
 
             <!-- Quick Meals Vertical RecyclerView -->

@@ -1,5 +1,6 @@
 package com.example.recipegenie.data
 
+import android.util.Log
 import com.example.recipegenie.BuildConfig
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.async
@@ -19,6 +20,7 @@ object GeminiRecipeRepository {
 
     private const val GEMINI_API_URL =
         "https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent"
+    private const val TAG = "GeminiRecipeRepo"
 
     private val client = OkHttpClient.Builder()
         .connectTimeout(30, TimeUnit.SECONDS)
@@ -35,7 +37,7 @@ object GeminiRecipeRepository {
         if (apiKey.isBlank()) error("Gemini API key is missing")
 
         return withContext(Dispatchers.IO) {
-            val ideas = generateRecipeIdeas(normalized, apiKey)
+            val ideas = ensureMinimumIdeas(generateRecipeIdeas(normalized, apiKey), normalized)
             if (ideas.isEmpty()) error("Gemini returned no recipe ideas")
 
             coroutineScope {
@@ -54,7 +56,6 @@ object GeminiRecipeRepository {
                     existingTitles = expandedRecipes.map { it.title.lowercase() }
                 )).distinctBy { it.title.lowercase() }
 
-                if (combinedRecipes.size < 2) error("Gemini returned too few recipes")
                 combinedRecipes.take(5)
             }
         }
@@ -73,10 +74,16 @@ object GeminiRecipeRepository {
         """.trimIndent()
 
         val text = callGemini(prompt, apiKey)
+        Log.d(TAG, "Idea response:\n$text")
         return text.lines()
             .map { it.trim().removePrefix("-").trim() }
             .filter { it.isNotBlank() }
             .distinct()
+    }
+
+    private fun ensureMinimumIdeas(ideas: List<String>, ingredients: List<String>): List<String> {
+        val combined = (ideas + buildLocalIdeaFallbacks(ingredients)).distinct()
+        return combined.take(5)
     }
 
     private fun expandRecipeIdea(
@@ -116,6 +123,7 @@ object GeminiRecipeRepository {
         """.trimIndent()
 
         val text = callGemini(prompt, apiKey)
+        Log.d(TAG, "Expanded recipe for '$recipeIdea':\n$text")
         return parseRecipeBlock(text, index) ?: error("Gemini returned invalid recipe format")
     }
 
@@ -245,6 +253,16 @@ object GeminiRecipeRepository {
             }
     }
 
+    private fun buildLocalIdeaFallbacks(ingredients: List<String>): List<String> {
+        val main = ingredients.take(2).joinToString(" ").replaceFirstChar { it.uppercase() }.ifBlank { "Mixed Veg" }
+        return listOf(
+            "$main Skillet",
+            "$main Rice Bowl",
+            "$main Masala Wrap",
+            "$main Stir Fry"
+        )
+    }
+
     private fun buildFallbackRecipe(
         title: String,
         ingredients: List<String>,
@@ -265,12 +283,7 @@ object GeminiRecipeRepository {
 
         val allIngredients = (availableIngredients + missingIngredients).take(6)
 
-        val steps = listOf(
-            Step(1, "Prep the ingredients for $title and keep them ready on the counter.", "Measure everything before starting.", 180),
-            Step(2, "Heat oil in a pan and cook the main ingredients until fragrant and lightly colored.", "Stir to avoid sticking.", 420),
-            Step(3, "Add seasoning and combine everything until the flavors come together.", "Taste and adjust salt if needed.", 300),
-            Step(4, "Finish $title, plate it neatly, and serve while warm.", "Garnish before serving for better flavor.", 120)
-        )
+        val steps = buildFallbackSteps(title, allIngredients)
 
         val usedCount = allIngredients.count { it.isAvailable }
         val missedCount = allIngredients.size - usedCount
@@ -318,6 +331,39 @@ object GeminiRecipeRepository {
             "pasta" in lower || "risotto" in lower -> "Italian"
             "fried rice" in lower || "noodle" in lower -> "Asian"
             else -> "Fusion"
+        }
+    }
+
+    private fun buildFallbackSteps(title: String, ingredients: List<Ingredient>): List<Step> {
+        val lowerTitle = title.lowercase()
+        val primary = ingredients.firstOrNull()?.name ?: "the main ingredient"
+        val secondary = ingredients.getOrNull(1)?.name ?: "the remaining ingredients"
+
+        return when {
+            "wrap" in lowerTitle || "roll" in lowerTitle -> listOf(
+                Step(1, "Slice and prep $primary and $secondary so the filling cooks evenly.", "Keep the pieces bite-sized for easier rolling.", 180),
+                Step(2, "Saute the filling in a pan until aromatic and lightly browned.", "Cook on medium heat so the filling stays juicy.", 360),
+                Step(3, "Warm the wrap base and spread a little seasoning or sauce over it.", "A warm wrap folds without cracking.", 90),
+                Step(4, "Add the filling, roll tightly, and toast briefly before serving.", "Slice diagonally for a cleaner presentation.", 150)
+            )
+            "bowl" in lowerTitle || "rice" in lowerTitle -> listOf(
+                Step(1, "Prep $primary, $secondary, and the remaining ingredients before heating the pan.", "Keep wet and dry ingredients separate at first.", 180),
+                Step(2, "Cook the vegetables or protein until lightly caramelized and flavorful.", "Avoid overcrowding the pan so everything browns.", 420),
+                Step(3, "Add the base and seasonings, then toss until everything is evenly coated.", "Fold gently to keep the texture intact.", 240),
+                Step(4, "Transfer to a bowl, garnish, and serve hot.", "A squeeze of lemon or herbs at the end brightens the dish.", 60)
+            )
+            "skillet" in lowerTitle || "stir fry" in lowerTitle -> listOf(
+                Step(1, "Chop $primary and $secondary into even pieces for quick cooking.", "Uniform cuts help everything finish at the same time.", 180),
+                Step(2, "Heat oil in a skillet and cook the aromatics until fragrant.", "Do not let the aromatics burn.", 120),
+                Step(3, "Add the main ingredients and stir fry until tender with a little color.", "Keep the heat fairly high for better flavor.", 360),
+                Step(4, "Season, toss once more, and serve immediately.", "Finish with a quick garnish for freshness.", 90)
+            )
+            else -> listOf(
+                Step(1, "Prepare $primary, $secondary, and the rest of the ingredients before you start cooking.", "This makes the cooking process smoother.", 180),
+                Step(2, "Cook the main ingredients until fragrant and lightly golden.", "Stir occasionally so nothing sticks.", 360),
+                Step(3, "Add the remaining ingredients and simmer or toss until the flavors come together.", "Taste and adjust the seasoning at this stage.", 300),
+                Step(4, "Plate $title and serve warm.", "Add a final garnish for extra texture and color.", 60)
+            )
         }
     }
 

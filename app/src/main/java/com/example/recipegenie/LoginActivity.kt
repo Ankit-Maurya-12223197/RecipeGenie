@@ -151,14 +151,7 @@ class LoginActivity : AppCompatActivity() {
 
     private fun checkPreferencesAndNavigate() {
         showLoading(false)
-        // Check if user has set preferences; if not, go to PreferencesActivity
-        val prefs = getSharedPreferences("recipe_genie_prefs", MODE_PRIVATE)
-        val hasSetPrefs = prefs.getBoolean("has_set_preferences", false)
-        if (hasSetPrefs) {
-            startActivity(Intent(this, MainActivity::class.java))
-        } else {
-            startActivity(Intent(this, PreferencesActivity::class.java))
-        }
+        startActivity(Intent(this, MainActivity::class.java))
         finishAffinity()
     }
 

@@ -47,7 +47,7 @@
         android:id="@+id/btn_quick_cook"
         style="@style/Widget.RecipeGenie.Button.Primary"
         android:layout_width="wrap_content"
-        android:layout_height="36dp"
+        android:layout_height="45dp"
         android:text="@string/cook"
         android:textSize="12sp"
         android:paddingHorizontal="14dp"

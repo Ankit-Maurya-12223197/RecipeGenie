@@ -4,7 +4,6 @@ package com.example.recipegenie.adapters
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.ImageButton
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
@@ -23,7 +22,6 @@ class RecipeCardAdapter(
         val tvTime: TextView = itemView.findViewById(R.id.tv_recipe_time)
         val tvRating: TextView = itemView.findViewById(R.id.tv_recipe_rating)
         val tvDifficulty: TextView = itemView.findViewById(R.id.tv_recipe_difficulty)
-        val btnFavourite: ImageButton = itemView.findViewById(R.id.btn_favourite)
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
@@ -44,13 +42,6 @@ class RecipeCardAdapter(
             .placeholder(R.drawable.placeholder_recipe)
             .centerCrop()
             .into(holder.ivThumbnail)
-
-        holder.btnFavourite.setOnClickListener {
-            recipe.isSaved = !recipe.isSaved
-            holder.btnFavourite.setImageResource(
-                if (recipe.isSaved) R.drawable.ic_heart_filled else R.drawable.ic_heart_outline
-            )
-        }
 
         holder.itemView.setOnClickListener { onItemClick(recipe) }
     }

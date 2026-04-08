@@ -87,19 +87,12 @@
 
     <!-- Chip Style -->
     <style name="Widget.RecipeGenie.Chip" parent="Widget.MaterialComponents.Chip.Choice">
-        <item name="chipBackgroundColor">@color/gray_bg</item>
-        <item name="android:textColor">@color/gray_dark</item>
-        <item name="chipStrokeColor">@color/gray_border</item>
-        <item name="chipStrokeWidth">0.5dp</item>
+        <item name="chipBackgroundColor">@color/selector_chip_background</item>
+        <item name="android:textColor">@color/selector_chip_text</item>
+        <item name="chipStrokeColor">@color/selector_chip_stroke</item>
+        <item name="chipStrokeWidth">1dp</item>
         <item name="chipCornerRadius">16dp</item>
         <item name="android:textSize">12sp</item>
-    </style>
-
-    <style name="Widget.RecipeGenie.Chip.Selected" parent="Widget.RecipeGenie.Chip">
-        <item name="chipBackgroundColor">@color/orange_extra_light</item>
-        <item name="android:textColor">@color/orange_dark</item>
-        <item name="chipStrokeColor">@color/orange_primary</item>
-        <item name="chipStrokeWidth">1.5dp</item>
     </style>
 
     <!-- Text Styles -->

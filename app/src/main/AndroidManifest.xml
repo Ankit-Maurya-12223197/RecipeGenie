@@ -35,11 +35,7 @@
             android:name=".LoginActivity"
             android:exported="false"
             android:screenOrientation="portrait"
-            android:windowSoftInputMode="adjustResize" /> <!-- ── Onboarding ─────────────────────────────────────────────────── -->
-        <activity
-            android:name=".PreferencesActivity"
-            android:exported="false"
-            android:screenOrientation="portrait" /> <!-- ── Main (bottom nav host) ────────────────────────────────────── -->
+            android:windowSoftInputMode="adjustResize" /> <!-- ── Main (bottom nav host) ────────────────────────────────────── -->
         <activity
             android:name=".MainActivity"
             android:exported="false"

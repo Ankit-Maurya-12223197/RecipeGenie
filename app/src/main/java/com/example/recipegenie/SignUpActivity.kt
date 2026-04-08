@@ -271,12 +271,12 @@ class SignUpActivity : AppCompatActivity() {
             .set(userDoc)
             .addOnSuccessListener {
                 showLoading(false)
-                navigateToPreferences()
+                navigateToHome()
             }
             .addOnFailureListener {
                 // Doc creation failed but auth succeeded — still navigate
                 showLoading(false)
-                navigateToPreferences()
+                navigateToHome()
             }
     }
 
@@ -323,12 +323,6 @@ class SignUpActivity : AppCompatActivity() {
     }
 
     // ── Navigation ────────────────────────────────────────────────────────────
-
-    private fun navigateToPreferences() {
-        startActivity(Intent(this, PreferencesActivity::class.java))
-        // Clear the back-stack so user can't go back to sign-up
-        finishAffinity()
-    }
 
     private fun navigateToHome() {
         startActivity(Intent(this, MainActivity::class.java))
