@@ -88,10 +88,11 @@ class RecipeDetailActivity : AppCompatActivity() {
         findViewById<com.google.android.material.button.MaterialButton>(R.id.btn_start_cooking)
             .setOnClickListener {
                 recipe?.let { r ->
+                    val timedSteps = normalizeStepsForCooking(r.steps, r.cookTimeMinutes)
                     startActivity(Intent(this, CookModeActivity::class.java).apply {
                         putExtra("recipe_id", r.id)
                         putParcelableArrayListExtra("steps",
-                            ArrayList(r.steps ?: emptyList()))
+                            ArrayList(timedSteps))
                     })
                 }
             }
@@ -124,6 +125,9 @@ class RecipeDetailActivity : AppCompatActivity() {
     }
 
     private fun displayRecipe(r: Recipe) {
+        val normalizedSteps = normalizeStepsForCooking(r.steps, r.cookTimeMinutes)
+        recipe = r.copy(steps = normalizedSteps)
+
         tvTitle.text = r.title
         tvCookTime.text = r.cookTimeMinutes.toString()
         tvServings.text = r.servings.toString()
@@ -142,7 +146,7 @@ class RecipeDetailActivity : AppCompatActivity() {
         rvIngredients.adapter = IngredientItemAdapter(r.ingredients ?: emptyList(), userIngredients)
 
         // Load steps
-        rvSteps.adapter = StepItemAdapter(r.steps ?: emptyList())
+        rvSteps.adapter = StepItemAdapter(normalizedSteps)
 
         // Set nutrition
         r.nutrition?.let { n ->
@@ -154,6 +158,50 @@ class RecipeDetailActivity : AppCompatActivity() {
 
         // Check if already saved
         checkIfSaved(r.id)
+    }
+
+    private fun normalizeStepsForCooking(steps: List<Step>?, totalCookTimeMinutes: Int): List<Step> {
+        val sourceSteps = steps.orEmpty()
+        if (sourceSteps.isEmpty()) return emptyList()
+        if (sourceSteps.all { (it.durationSeconds ?: 0) > 0 }) return sourceSteps
+
+        val fallbackPerStepSeconds = ((totalCookTimeMinutes.coerceAtLeast(5) * 60) / sourceSteps.size)
+            .coerceAtLeast(60)
+
+        return sourceSteps.mapIndexed { index, step ->
+            step.copy(
+                stepNumber = if (step.stepNumber > 0) step.stepNumber else index + 1,
+                durationSeconds = step.durationSeconds?.takeIf { it > 0 }
+                    ?: estimateStepDurationSeconds(step.instruction, fallbackPerStepSeconds)
+            )
+        }
+    }
+
+    private fun estimateStepDurationSeconds(instruction: String, fallbackSeconds: Int): Int {
+        val text = instruction.lowercase()
+        val number = Regex("(\\d+)").find(text)?.groupValues?.getOrNull(1)?.toIntOrNull()
+
+        val estimatedSeconds = when {
+            Regex("\\b(\\d+)\\s*(hour|hours|hr|hrs)\\b").containsMatchIn(text) ->
+                (number ?: 1) * 3600
+            Regex("\\b(\\d+)\\s*(minute|minutes|min|mins)\\b").containsMatchIn(text) ->
+                (number ?: (fallbackSeconds / 60).coerceAtLeast(1)) * 60
+            Regex("\\b(\\d+)\\s*(second|seconds|sec|secs)\\b").containsMatchIn(text) ->
+                number ?: fallbackSeconds
+            "marinate" in text || "rest" in text || "chill" in text || "refrigerate" in text ->
+                15 * 60
+            "bake" in text || "roast" in text || "simmer" in text || "boil" in text ->
+                12 * 60
+            "saute" in text || "sauté" in text || "fry" in text || "cook" in text ->
+                6 * 60
+            "mix" in text || "stir" in text || "whisk" in text || "combine" in text ->
+                3 * 60
+            "chop" in text || "slice" in text || "prepare" in text || "prep" in text ->
+                4 * 60
+            else -> fallbackSeconds
+        }
+
+        return estimatedSeconds.coerceAtLeast(60)
     }
 
     private fun getUserIngredients(): List<String> {

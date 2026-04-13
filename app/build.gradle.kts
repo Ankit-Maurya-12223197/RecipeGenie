@@ -37,6 +37,11 @@ android {
             "SPOONACULAR_API_KEY",
             "\"${localProperties.getProperty("SPOONACULAR_API_KEY", "")}\""
         )
+        buildConfigField(
+            "String",
+            "RESEND_API_KEY",
+            "\"${localProperties.getProperty("RESEND_API_KEY", "")}\""
+        )
     }
 
     buildFeatures {

@@ -179,10 +179,13 @@ object SpoonacularRepository {
         return buildList {
             for (i in 0 until steps.length()) {
                 val step = steps.optJSONObject(i) ?: continue
+                val instructionText = step.optString("step")
                 add(
                     Step(
                         stepNumber = step.optInt("number", i + 1),
-                        instruction = step.optString("step")
+                        instruction = instructionText,
+                        tip = buildStepTip(step),
+                        durationSeconds = parseStepDurationSeconds(step, instructionText)
                     )
                 )
             }
@@ -192,10 +195,81 @@ object SpoonacularRepository {
     private fun defaultSteps(item: JSONObject): List<Step> {
         val title = item.optString("title").ifBlank { "this recipe" }
         return listOf(
-            Step(1, "Prepare the ingredients for $title."),
-            Step(2, "Cook everything until the dish is ready to serve."),
-            Step(3, "Plate and enjoy while warm.")
+            Step(
+                stepNumber = 1,
+                instruction = "Prepare the ingredients for $title.",
+                tip = "Measure and keep everything ready before you start cooking.",
+                durationSeconds = 5 * 60
+            ),
+            Step(
+                stepNumber = 2,
+                instruction = "Cook everything until the dish is ready to serve.",
+                tip = "Adjust the heat as needed and stir occasionally.",
+                durationSeconds = 12 * 60
+            ),
+            Step(
+                stepNumber = 3,
+                instruction = "Plate and enjoy while warm.",
+                tip = "Let the dish rest briefly before serving.",
+                durationSeconds = 2 * 60
+            )
         )
+    }
+
+    private fun parseStepDurationSeconds(step: JSONObject, instruction: String): Int {
+        val length = step.optJSONObject("length")
+        val explicitDuration = length?.let { convertToSeconds(it.optDouble("number"), it.optString("unit")) }
+        return explicitDuration?.takeIf { it > 0 } ?: estimateDurationSeconds(instruction)
+    }
+
+    private fun convertToSeconds(amount: Double, unit: String): Int? {
+        if (amount <= 0.0) return null
+        val normalizedUnit = unit.lowercase()
+        val seconds = when {
+            "second" in normalizedUnit -> amount
+            "minute" in normalizedUnit -> amount * 60
+            "hour" in normalizedUnit -> amount * 3600
+            else -> return null
+        }
+        return seconds.toInt().coerceAtLeast(30)
+    }
+
+    private fun estimateDurationSeconds(instruction: String): Int {
+        val text = instruction.lowercase()
+        val numberMatch = Regex("(\\d+)").find(text)?.groupValues?.getOrNull(1)?.toIntOrNull()
+        val minutesFromText = when {
+            Regex("\\b(\\d+)\\s*(hour|hours|hr|hrs)\\b").containsMatchIn(text) ->
+                (numberMatch ?: 1) * 60
+            Regex("\\b(\\d+)\\s*(minute|minutes|min|mins)\\b").containsMatchIn(text) ->
+                numberMatch ?: 5
+            Regex("\\b(\\d+)\\s*(second|seconds|sec|secs)\\b").containsMatchIn(text) ->
+                ((numberMatch ?: 30) / 60).coerceAtLeast(1)
+            "marinate" in text || "rest" in text || "chill" in text || "refrigerate" in text -> 15
+            "bake" in text || "roast" in text || "simmer" in text || "boil" in text -> 12
+            "saute" in text || "sauté" in text || "fry" in text || "cook" in text -> 6
+            "mix" in text || "stir" in text || "whisk" in text || "combine" in text -> 3
+            "chop" in text || "slice" in text || "prep" in text || "prepare" in text -> 4
+            else -> 5
+        }
+        return (minutesFromText.coerceAtLeast(1)) * 60
+    }
+
+    private fun buildStepTip(step: JSONObject): String? {
+        val equipment = step.optJSONArray("equipment")
+        if (equipment != null && equipment.length() > 0) {
+            val firstTool = equipment.optJSONObject(0)?.optString("name").orEmpty()
+            if (firstTool.isNotBlank()) {
+                return "Use a $firstTool for best results."
+            }
+        }
+        val ingredients = step.optJSONArray("ingredients")
+        if (ingredients != null && ingredients.length() > 0) {
+            val firstIngredient = ingredients.optJSONObject(0)?.optString("name").orEmpty()
+            if (firstIngredient.isNotBlank()) {
+                return "Keep an eye on the $firstIngredient while cooking."
+            }
+        }
+        return null
     }
 
     private fun difficultyFromTime(minutes: Int): String = when {

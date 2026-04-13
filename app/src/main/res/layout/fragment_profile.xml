@@ -154,21 +154,20 @@
                 android:layout_marginStart="56dp"
                 android:layout_marginEnd="56dp" />
 
-            <!-- Notifications -->
-            <LinearLayout android:id="@+id/row_notifications"
+            <!-- Dark Mode -->
+            <LinearLayout android:id="@+id/row_dark_mode"
                 android:layout_width="match_parent" android:layout_height="56dp"
                 android:orientation="horizontal" android:gravity="center_vertical"
                 android:paddingHorizontal="16dp" android:background="?attr/selectableItemBackground">
                 <ImageView android:layout_width="24dp" android:layout_height="24dp"
-                    android:src="@drawable/ic_bell" android:layout_marginEnd="16dp"
-                    app:tint="@color/orange_primary" android:contentDescription="Notifications" />
+                    android:src="@drawable/ic_moon" android:layout_marginEnd="16dp"
+                    app:tint="@color/orange_primary" android:contentDescription="Dark mode" />
                 <TextView android:layout_width="0dp" android:layout_height="wrap_content"
-                    android:layout_weight="1" android:text="@string/notifications"
+                    android:layout_weight="1" android:text="@string/dark_mode"
                     android:textSize="14sp" android:textColor="@color/black" android:fontFamily="@font/poppins_medium" />
                 <com.google.android.material.switchmaterial.SwitchMaterial
-                    android:id="@+id/switch_notifications"
+                    android:id="@+id/switch_dark_mode"
                     android:layout_width="wrap_content" android:layout_height="wrap_content"
-                    android:checked="true"
                     app:thumbTint="@color/white"
                     app:trackTint="@color/selector_switch_track" />
             </LinearLayout>
@@ -178,16 +177,16 @@
                 android:layout_marginStart="56dp"
                 android:layout_marginEnd="56dp" />
 
-            <!-- Help & Support -->
-            <LinearLayout android:id="@+id/row_help"
+            <!-- Your Feedback -->
+            <LinearLayout android:id="@+id/row_feedback"
                 android:layout_width="match_parent" android:layout_height="56dp"
                 android:orientation="horizontal" android:gravity="center_vertical"
                 android:paddingHorizontal="16dp" android:background="?attr/selectableItemBackground">
                 <ImageView android:layout_width="24dp" android:layout_height="24dp"
                     android:src="@drawable/ic_help" android:layout_marginEnd="16dp"
-                    app:tint="@color/orange_primary" android:contentDescription="Help" />
+                    app:tint="@color/orange_primary" android:contentDescription="Feedback" />
                 <TextView android:layout_width="0dp" android:layout_height="wrap_content"
-                    android:layout_weight="1" android:text="@string/help_support"
+                    android:layout_weight="1" android:text="@string/your_feedback"
                     android:textSize="14sp" android:textColor="@color/black" android:fontFamily="@font/poppins_medium" />
                 <ImageView android:layout_width="20dp" android:layout_height="20dp"
                     android:src="@drawable/ic_chevron_right" app:tint="@color/gray_hint"

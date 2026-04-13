@@ -13,8 +13,21 @@ import androidx.appcompat.app.AppCompatActivity
 import com.example.recipegenie.data.Step
 import com.google.android.material.button.MaterialButton
 import com.google.android.material.progressindicator.CircularProgressIndicator
+import java.text.ParseException
+import java.text.SimpleDateFormat
+import java.util.Calendar
+import java.util.Date
+import java.util.Locale
 
 class CookModeActivity : AppCompatActivity() {
+
+    companion object {
+        private const val PREFS_NAME = "recipe_genie_prefs"
+        private const val KEY_COOKED_DATE = "cooked_recipes_date"
+        private const val KEY_COOKED_COUNT = "cooked_recipes_count"
+        private const val KEY_STREAK_LAST_DATE = "cooked_streak_last_date"
+        private const val KEY_STREAK_COUNT = "cooked_streak_count"
+    }
 
     private var steps: List<Step> = emptyList()
     private var currentStepIndex = 0
@@ -195,8 +208,63 @@ class CookModeActivity : AppCompatActivity() {
         com.google.android.material.dialog.MaterialAlertDialogBuilder(this)
             .setTitle("Recipe complete!")
             .setMessage("Great job! You've finished cooking. Enjoy your meal 🎉")
-            .setPositiveButton("Done") { _, _ -> finish() }
+            .setPositiveButton("Done") { _, _ ->
+                recordCookedRecipe()
+                finish()
+            }
             .show()
+    }
+
+    private fun recordCookedRecipe() {
+        val prefs = getSharedPreferences(PREFS_NAME, MODE_PRIVATE)
+        val today = currentDateKey()
+        val cookedDate = prefs.getString(KEY_COOKED_DATE, null)
+        val currentCount = if (cookedDate == today) {
+            prefs.getInt(KEY_COOKED_COUNT, 0)
+        } else {
+            0
+        }
+        val lastStreakDate = prefs.getString(KEY_STREAK_LAST_DATE, null)
+        val currentStreak = prefs.getInt(KEY_STREAK_COUNT, 0)
+        val nextStreak = when (daysBetween(lastStreakDate, today)) {
+            0 -> currentStreak.coerceAtLeast(1)
+            1 -> currentStreak + 1
+            else -> 1
+        }
+
+        prefs.edit()
+            .putString(KEY_COOKED_DATE, today)
+            .putInt(KEY_COOKED_COUNT, currentCount + 1)
+            .putString(KEY_STREAK_LAST_DATE, today)
+            .putInt(KEY_STREAK_COUNT, nextStreak)
+            .apply()
+    }
+
+    private fun currentDateKey(): String {
+        return SimpleDateFormat("yyyy-MM-dd", Locale.getDefault()).format(Date())
+    }
+
+    private fun daysBetween(fromDate: String?, toDate: String): Int {
+        if (fromDate.isNullOrBlank()) return Int.MAX_VALUE
+        val format = SimpleDateFormat("yyyy-MM-dd", Locale.getDefault())
+        return try {
+            val from = format.parse(fromDate) ?: return Int.MAX_VALUE
+            val to = format.parse(toDate) ?: return Int.MAX_VALUE
+            val diffMillis = startOfDay(to).time - startOfDay(from).time
+            (diffMillis / (24 * 60 * 60 * 1000L)).toInt()
+        } catch (_: ParseException) {
+            Int.MAX_VALUE
+        }
+    }
+
+    private fun startOfDay(date: Date): Date {
+        return Calendar.getInstance().apply {
+            time = date
+            set(Calendar.HOUR_OF_DAY, 0)
+            set(Calendar.MINUTE, 0)
+            set(Calendar.SECOND, 0)
+            set(Calendar.MILLISECOND, 0)
+        }.time
     }
 
     override fun onDestroy() {

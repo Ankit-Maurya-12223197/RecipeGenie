@@ -89,7 +89,8 @@
     <string name="dietary_preferences">Dietary preferences</string>
     <string name="cooking_history">Cooking history</string>
     <string name="notifications">Notifications</string>
-    <string name="help_support">Help &amp; Support</string>
+    <string name="dark_mode">Dark mode</string>
+    <string name="your_feedback">Your feedback</string>
     <string name="sign_out">Sign out</string>
     <string name="recipes_cooked">Recipes cooked</string>
     <string name="favourites">Favourites</string>
