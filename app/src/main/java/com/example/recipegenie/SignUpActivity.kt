@@ -179,14 +179,23 @@ class SignUpActivity : AppCompatActivity() {
 
         auth.createUserWithEmailAndPassword(email, password)
             .addOnSuccessListener { result ->
-                // Set display name on Firebase Auth profile
+                val user = result.user
+                if (user == null) {
+                    showLoading(false)
+                    Toast.makeText(this, "Sign up failed. Please try again.", Toast.LENGTH_LONG).show()
+                    return@addOnSuccessListener
+                }
+
                 val profileUpdate = UserProfileChangeRequest.Builder()
                     .setDisplayName(name)
                     .build()
-                result.user?.updateProfile(profileUpdate)
 
-                // Create user document in Firestore
-                createUserDocument(result.user?.uid ?: "", name, email)
+                user.updateProfile(profileUpdate)
+                    .addOnCompleteListener {
+                        createUserDocument(user.uid, name, email) {
+                            sendVerificationEmailAndFinish(user.email ?: email)
+                        }
+                    }
             }
             .addOnFailureListener { e ->
                 showLoading(false)
@@ -254,7 +263,12 @@ class SignUpActivity : AppCompatActivity() {
         return isValid
     }
 
-    private fun createUserDocument(uid: String, name: String, email: String) {
+    private fun createUserDocument(
+        uid: String,
+        name: String,
+        email: String,
+        onComplete: () -> Unit
+    ) {
         val userDoc = hashMapOf(
             "uid" to uid,
             "name" to name,
@@ -270,13 +284,43 @@ class SignUpActivity : AppCompatActivity() {
         db.collection("users").document(uid)
             .set(userDoc)
             .addOnSuccessListener {
-                showLoading(false)
-                navigateToHome()
+                onComplete()
             }
             .addOnFailureListener {
-                // Doc creation failed but auth succeeded — still navigate
+                onComplete()
+            }
+    }
+
+    private fun sendVerificationEmailAndFinish(email: String) {
+        val user = auth.currentUser
+        if (user == null) {
+            showLoading(false)
+            Toast.makeText(this, "Verification setup failed. Please try signing in.", Toast.LENGTH_LONG).show()
+            return
+        }
+
+        user.sendEmailVerification()
+            .addOnSuccessListener {
+                auth.signOut()
                 showLoading(false)
-                navigateToHome()
+                Toast.makeText(
+                    this,
+                    "Verification link sent to $email. Please confirm your email before logging in.",
+                    Toast.LENGTH_LONG
+                ).show()
+                startActivity(Intent(this, LoginActivity::class.java).apply {
+                    putExtra("prefill_email", email)
+                })
+                finishAffinity()
+            }
+            .addOnFailureListener { e ->
+                auth.signOut()
+                showLoading(false)
+                Toast.makeText(
+                    this,
+                    e.localizedMessage ?: "Couldn't send verification email.",
+                    Toast.LENGTH_LONG
+                ).show()
             }
     }
 
@@ -309,7 +353,10 @@ class SignUpActivity : AppCompatActivity() {
                         uid = user.uid,
                         name = user.displayName ?: "",
                         email = user.email ?: ""
-                    )
+                    ) {
+                        showLoading(false)
+                        navigateToHome()
+                    }
                 } else {
                     // Existing user — go to home directly
                     showLoading(false)

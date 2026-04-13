@@ -5,6 +5,7 @@ import android.content.Intent
 import android.os.Bundle
 import android.util.Patterns
 import android.view.View
+import android.widget.EditText
 import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
@@ -13,11 +14,13 @@ import com.google.android.gms.auth.api.signin.GoogleSignInClient
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions
 import com.google.android.gms.common.api.ApiException
 import com.google.android.material.button.MaterialButton
+import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.google.android.material.progressindicator.CircularProgressIndicator
 import com.google.android.material.textfield.TextInputEditText
 import com.google.android.material.textfield.TextInputLayout
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.GoogleAuthProvider
+import com.google.firebase.auth.FirebaseUser
 
 class LoginActivity : AppCompatActivity() {
 
@@ -43,6 +46,7 @@ class LoginActivity : AppCompatActivity() {
         auth = FirebaseAuth.getInstance()
         setupGoogleSignIn()
         bindViews()
+        prefillEmailFromIntent()
         setupClickListeners()
     }
 
@@ -64,21 +68,20 @@ class LoginActivity : AppCompatActivity() {
         progressLogin = findViewById(R.id.progress_login)
     }
 
+    private fun prefillEmailFromIntent() {
+        val prefillEmail = intent.getStringExtra("prefill_email").orEmpty()
+        if (prefillEmail.isNotBlank()) {
+            etEmail.setText(prefillEmail)
+        }
+    }
+
     private fun setupClickListeners() {
         // Back
         findViewById<View>(R.id.btn_back).setOnClickListener { finish() }
 
         // Forgot password
         findViewById<TextView>(R.id.tv_forgot_password).setOnClickListener {
-            val email = etEmail.text.toString()
-            if (email.isEmpty()) {
-                tilEmail.error = "Enter your email first"
-                return@setOnClickListener
-            }
-            auth.sendPasswordResetEmail(email)
-                .addOnSuccessListener {
-                    Toast.makeText(this, "Reset email sent!", Toast.LENGTH_SHORT).show()
-                }
+            showForgotPasswordDialog()
         }
 
         // Sign in with email
@@ -118,7 +121,16 @@ class LoginActivity : AppCompatActivity() {
 
         showLoading(true)
         auth.signInWithEmailAndPassword(email, password)
-            .addOnSuccessListener { checkPreferencesAndNavigate() }
+            .addOnSuccessListener { result ->
+                result.user?.reload()
+                    ?.addOnSuccessListener {
+                        handlePostLogin(result.user)
+                    }
+                    ?.addOnFailureListener {
+                        showLoading(false)
+                        Toast.makeText(this, "Couldn't verify account status. Try again.", Toast.LENGTH_LONG).show()
+                    }
+            }
             .addOnFailureListener { e ->
                 showLoading(false)
                 Toast.makeText(this, e.localizedMessage ?: "Sign in failed", Toast.LENGTH_LONG).show()
@@ -142,10 +154,87 @@ class LoginActivity : AppCompatActivity() {
         showLoading(true)
         val credential = GoogleAuthProvider.getCredential(idToken, null)
         auth.signInWithCredential(credential)
-            .addOnSuccessListener { checkPreferencesAndNavigate() }
+            .addOnSuccessListener { result ->
+                handlePostLogin(result.user)
+            }
             .addOnFailureListener { e ->
                 showLoading(false)
                 Toast.makeText(this, e.localizedMessage ?: "Auth failed", Toast.LENGTH_LONG).show()
+            }
+    }
+
+    private fun handlePostLogin(user: FirebaseUser?) {
+        if (user == null) {
+            showLoading(false)
+            Toast.makeText(this, "Sign in failed", Toast.LENGTH_LONG).show()
+            return
+        }
+
+        val hasPasswordProvider = user.providerData.any { it.providerId == "password" }
+        if (hasPasswordProvider && !user.isEmailVerified) {
+            auth.signOut()
+            showLoading(false)
+            Toast.makeText(
+                this,
+                "First confirm your email using the verification link, then sign in.",
+                Toast.LENGTH_LONG
+            ).show()
+            return
+        }
+
+        checkPreferencesAndNavigate()
+    }
+
+    private fun showForgotPasswordDialog() {
+        val input = EditText(this).apply {
+            hint = getString(R.string.email_address)
+            inputType = android.text.InputType.TYPE_CLASS_TEXT or
+                android.text.InputType.TYPE_TEXT_VARIATION_EMAIL_ADDRESS
+            setText(etEmail.text?.toString()?.trim().orEmpty())
+            setSelection(text.length)
+        }
+
+        MaterialAlertDialogBuilder(this)
+            .setTitle("Reset password")
+            .setMessage("Enter your email address to receive a password reset link.")
+            .setView(input)
+            .setPositiveButton("Send link") { _, _ ->
+                val email = input.text.toString().trim()
+                sendPasswordReset(email)
+            }
+            .setNegativeButton("Cancel", null)
+            .show()
+    }
+
+    private fun sendPasswordReset(email: String) {
+        if (email.isBlank()) {
+            tilEmail.error = "Enter your email first"
+            Toast.makeText(this, "Enter your email first", Toast.LENGTH_SHORT).show()
+            return
+        }
+
+        if (!Patterns.EMAIL_ADDRESS.matcher(email).matches()) {
+            tilEmail.error = "Enter a valid email address"
+            Toast.makeText(this, "Enter a valid email address", Toast.LENGTH_SHORT).show()
+            return
+        }
+
+        tilEmail.error = null
+        auth.sendPasswordResetEmail(email)
+            .addOnSuccessListener {
+                etEmail.setText(email)
+                Toast.makeText(
+                    this,
+                    "Password reset link sent to $email",
+                    Toast.LENGTH_LONG
+                ).show()
+            }
+            .addOnFailureListener { e ->
+                Toast.makeText(
+                    this,
+                    e.localizedMessage ?: "Couldn't send reset email",
+                    Toast.LENGTH_LONG
+                ).show()
             }
     }
 
