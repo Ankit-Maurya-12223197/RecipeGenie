@@ -86,42 +86,126 @@ object GeminiRecipeRepository {
         apiKey: String
     ): Recipe {
         val prompt = """
-            Create one complete recipe for: $recipeIdea
-            Available ingredients: ${ingredients.joinToString(", ")}.
+        Create exactly one complete recipe for: $recipeIdea
+        Available ingredients: ${ingredients.joinToString(", ")}
 
-            Return plain text only using this exact format:
-            TITLE: recipe title
-            DESCRIPTION: one short sentence
-            COOK_TIME_MINUTES: integer
-            SERVINGS: integer
-            DIFFICULTY: Easy or Medium or Hard
-            RATING: decimal from 4.0 to 4.9
-            CATEGORY: breakfast or lunch or dinner or snacks or desserts or all
-            CUISINE: cuisine name
-            INGREDIENT: ingredient name | amount | yes/no
-            INGREDIENT: ingredient name | amount | yes/no
-            STEP: 1 | instruction sentence | tip sentence or none | duration seconds or 0
-            STEP: 2 | instruction sentence | tip sentence or none | duration seconds or 0
-            STEP: 3 | instruction sentence | tip sentence or none | duration seconds or 0
-            STEP: 4 | instruction sentence | tip sentence or none | duration seconds or 0
-            NUTRITION: calories | protein | carbs | fat | fiber
+        Return ONLY valid JSON.
+        Do not use markdown.
+        Do not add explanation.
 
-            Rules:
-            - Use yes only for ingredients from the available list.
-            - You may include 1 to 3 extra ingredients marked no.
-            - Provide 4 to 8 ingredients.
-            - Provide 4 to 6 specific steps.
-            - Each step must be specific to this recipe title and ingredient list.
-            - Mention real ingredients, cooking actions, or texture changes in the steps.
-            - Do not write generic steps that could fit any recipe.
-            - Avoid quotes and avoid using the pipe character except as separator.
-        """.trimIndent()
+        Use this exact JSON structure:
+        {
+          "title": "string",
+          "description": "string",
+          "cookTimeMinutes": 20,
+          "servings": 2,
+          "difficulty": "Easy",
+          "rating": 4.5,
+          "category": "dinner",
+          "cuisine": "Indian",
+          "ingredients": [
+            {
+              "name": "Paneer",
+              "amount": "200g",
+              "isAvailable": true
+            }
+          ],
+          "steps": [
+            {
+              "stepNumber": 1,
+              "instruction": "Heat oil in a pan",
+              "tip": "Use medium flame",
+              "durationSeconds": 60
+            }
+          ],
+          "nutrition": {
+            "calories": 320,
+            "protein": 20,
+            "carbs": 18,
+            "fat": 14,
+            "fiber": 5
+          }
+        }
 
-        val text = callGemini(prompt, apiKey)
-        Log.d(TAG, "Expanded recipe for '$recipeIdea':\n$text")
-        return parseRecipeBlock(text, index)
-            ?: repairAndParseRecipeBlock(text, recipeIdea, index, apiKey)
-            ?: error("Gemini returned invalid recipe format")
+        Rules:
+        - Keep recipe realistic.
+        - Mark ingredient `isAvailable=true` only if it comes from available ingredients.
+        - You may add 1-2 missing ingredients with false.
+        - Add 4-6 steps.
+    """.trimIndent()
+
+        val json = callGemini(prompt, apiKey)
+            .removePrefix("```json")
+            .removePrefix("```")
+            .removeSuffix("```")
+            .trim()
+
+        return parseRecipeJson(json, index)
+            ?: error("Gemini returned invalid recipe JSON")
+    }
+
+    private fun parseRecipeJson(jsonText: String, index: Int): Recipe? {
+        return try {
+            val obj = JSONObject(jsonText)
+
+            val ingredients = obj.optJSONArray("ingredients")?.let { array ->
+                List(array.length()) { i ->
+                    val ing = array.getJSONObject(i)
+                    Ingredient(
+                        name = ing.optString("name"),
+                        amount = ing.optString("amount"),
+                        isAvailable = ing.optBoolean("isAvailable", true)
+                    )
+                }
+            } ?: emptyList()
+
+            val steps = obj.optJSONArray("steps")?.let { array ->
+                List(array.length()) { i ->
+                    val step = array.getJSONObject(i)
+                    Step(
+                        stepNumber = step.optInt("stepNumber", i + 1),
+                        instruction = step.optString("instruction"),
+                        tip = step.optString("tip").takeIf { it.isNotBlank() },
+                        durationSeconds = step.optInt("durationSeconds").takeIf { it > 0 }
+                    )
+                }
+            } ?: emptyList()
+
+            val nutritionObj = obj.optJSONObject("nutrition")
+            val nutrition = nutritionObj?.let {
+                Nutrition(
+                    calories = it.optInt("calories"),
+                    protein = it.optInt("protein"),
+                    carbs = it.optInt("carbs"),
+                    fat = it.optInt("fat"),
+                    fiber = it.optInt("fiber")
+                )
+            }
+
+            val usedCount = ingredients.count { it.isAvailable }
+            val missedCount = ingredients.size - usedCount
+
+            Recipe(
+                id = "ai_${'$'}{UUID.randomUUID()}_${'$'}index",
+                title = obj.optString("title"),
+                imageUrl = "",
+                cookTimeMinutes = obj.optInt("cookTimeMinutes", 20),
+                servings = obj.optInt("servings", 2),
+                difficulty = obj.optString("difficulty", "Medium"),
+                rating = obj.optDouble("rating", 4.5).toFloat(),
+                category = obj.optString("category", "all"),
+                cuisine = obj.optString("cuisine"),
+                description = obj.optString("description"),
+                ingredients = ingredients,
+                steps = steps,
+                nutrition = nutrition,
+                usedIngredientCount = usedCount,
+                missedIngredientCount = missedCount
+            )
+        } catch (e: Exception) {
+            Log.e(TAG, "parseRecipeJson failed", e)
+            null
+        }
     }
 
     private fun callGemini(prompt: String, apiKey: String): String {
@@ -130,8 +214,9 @@ object GeminiRecipeRepository {
                 put("parts", JSONArray().put(JSONObject().put("text", prompt)))
             }))
             put("generationConfig", JSONObject().apply {
-                put("temperature", 0.6)
-                put("maxOutputTokens", 800)
+                put("temperature", 0.3)
+                put("maxOutputTokens", 2500)
+                put("responseMimeType", "application/json")
             })
         }
 

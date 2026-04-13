@@ -38,6 +38,9 @@ class LoginActivity : AppCompatActivity() {
     private lateinit var btnSignIn: MaterialButton
     private lateinit var btnGoogleSignIn: MaterialButton
     private lateinit var progressLogin: CircularProgressIndicator
+    private lateinit var btnBack: View
+    private lateinit var tvForgotPassword: TextView
+    private lateinit var tvSignUp: TextView
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -66,6 +69,9 @@ class LoginActivity : AppCompatActivity() {
         btnSignIn = findViewById(R.id.btn_sign_in)
         btnGoogleSignIn = findViewById(R.id.btn_google_sign_in)
         progressLogin = findViewById(R.id.progress_login)
+        btnBack = findViewById(R.id.btn_back)
+        tvForgotPassword = findViewById(R.id.tv_forgot_password)
+        tvSignUp = findViewById(R.id.tv_sign_up)
     }
 
     private fun prefillEmailFromIntent() {
@@ -76,25 +82,16 @@ class LoginActivity : AppCompatActivity() {
     }
 
     private fun setupClickListeners() {
-        // Back
-        findViewById<View>(R.id.btn_back).setOnClickListener { finish() }
-
-        // Forgot password
-        findViewById<TextView>(R.id.tv_forgot_password).setOnClickListener {
-            showForgotPasswordDialog()
-        }
-
-        // Sign in with email
+        btnBack.setOnClickListener { finish() }
+        tvForgotPassword.setOnClickListener { showForgotPasswordDialog() }
         btnSignIn.setOnClickListener { attemptEmailSignIn() }
 
-        // Google sign in
         btnGoogleSignIn.setOnClickListener {
-            val  signInIntent = googleSignInClient.signInIntent
+            val signInIntent = googleSignInClient.signInIntent
             startActivityForResult(signInIntent, RC_SIGN_IN)
         }
 
-        // Navigate to sign up
-        findViewById<TextView>(R.id.tv_sign_up).setOnClickListener {
+        tvSignUp.setOnClickListener {
             startActivity(Intent(this, SignUpActivity::class.java))
         }
     }

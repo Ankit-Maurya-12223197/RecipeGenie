@@ -45,6 +45,7 @@ class CookModeActivity : AppCompatActivity() {
     private lateinit var llStepDots: LinearLayout
     private lateinit var btnPrevious: MaterialButton
     private lateinit var btnNext: MaterialButton
+    private lateinit var btnExitCook: View
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -71,10 +72,11 @@ class CookModeActivity : AppCompatActivity() {
         llStepDots = findViewById(R.id.ll_step_dots)
         btnPrevious = findViewById(R.id.btn_previous_step)
         btnNext = findViewById(R.id.btn_next_step)
+        btnExitCook = findViewById(R.id.btn_exit_cook)
     }
 
     private fun setupClickListeners() {
-        findViewById<View>(R.id.btn_exit_cook).setOnClickListener {
+        btnExitCook.setOnClickListener {
             countDownTimer?.cancel()
             finish()
         }

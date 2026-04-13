@@ -16,11 +16,13 @@ class MainActivity : AppCompatActivity() {
         private const val KEY_SELECTED_NAV_ITEM = "selected_nav_item"
     }
 
+    private lateinit var bottomNav: BottomNavigationView
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
-        val bottomNav = findViewById<BottomNavigationView>(R.id.bottom_nav)
+        bindViews()
         bottomNav.setOnItemSelectedListener { item ->
             val fragment: Fragment = when (item.itemId) {
                 R.id.nav_home        -> HomeFragment()
@@ -41,6 +43,10 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
+    private fun bindViews() {
+        bottomNav = findViewById(R.id.bottom_nav)
+    }
+
     private fun loadFragment(fragment: Fragment) {
         supportFragmentManager.beginTransaction()
             .replace(R.id.fragment_container, fragment)
@@ -51,7 +57,7 @@ class MainActivity : AppCompatActivity() {
         super.onSaveInstanceState(outState)
         outState.putInt(
             KEY_SELECTED_NAV_ITEM,
-            findViewById<BottomNavigationView>(R.id.bottom_nav).selectedItemId
+            bottomNav.selectedItemId
         )
     }
 }

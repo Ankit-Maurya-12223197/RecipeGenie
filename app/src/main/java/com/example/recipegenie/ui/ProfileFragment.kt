@@ -17,6 +17,7 @@ import com.example.recipegenie.R
 import com.example.recipegenie.data.FeedbackRepository
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.google.android.material.imageview.ShapeableImageView
+import com.google.android.material.switchmaterial.SwitchMaterial
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.UserProfileChangeRequest
 import com.google.firebase.firestore.FirebaseFirestore
@@ -43,7 +44,18 @@ class ProfileFragment : Fragment() {
 
     private lateinit var auth: FirebaseAuth
     private lateinit var db: FirebaseFirestore
-    private var avatarView: ShapeableImageView? = null
+    private lateinit var avatarView: ShapeableImageView
+    private lateinit var tvProfileName: TextView
+    private lateinit var tvProfileEmail: TextView
+    private lateinit var tvStatCooked: TextView
+    private lateinit var tvStatStreak: TextView
+    private lateinit var tvStatSaved: TextView
+    private lateinit var rowEditProfile: View
+    private lateinit var rowHistory: View
+    private lateinit var rowFeedback: View
+    private lateinit var rowSignOut: View
+    private lateinit var rowDarkMode: View
+    private lateinit var switchDarkMode: SwitchMaterial
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -54,31 +66,45 @@ class ProfileFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
         auth = FirebaseAuth.getInstance()
         db = FirebaseFirestore.getInstance()
-        avatarView = view.findViewById(R.id.iv_profile_avatar)
+        bindViews(view)
 
-        loadUserProfile(view)
-        loadUserStats(view)
-        setupThemeToggle(view)
-        setupClickListeners(view)
+        loadUserProfile()
+        loadUserStats()
+        setupThemeToggle()
+        setupClickListeners()
     }
 
-    private fun loadUserProfile(view: View) {
-        val user = auth.currentUser ?: return
-        view.findViewById<TextView>(R.id.tv_profile_name).text = user.displayName ?: "Chef"
-        view.findViewById<TextView>(R.id.tv_profile_email).text = user.email ?: ""
+    private fun bindViews(view: View) {
+        avatarView = view.findViewById(R.id.iv_profile_avatar)
+        tvProfileName = view.findViewById(R.id.tv_profile_name)
+        tvProfileEmail = view.findViewById(R.id.tv_profile_email)
+        tvStatCooked = view.findViewById(R.id.tv_stat_cooked)
+        tvStatStreak = view.findViewById(R.id.tv_stat_streak)
+        tvStatSaved = view.findViewById(R.id.tv_stat_saved)
+        rowEditProfile = view.findViewById(R.id.row_edit_profile)
+        rowHistory = view.findViewById(R.id.row_history)
+        rowFeedback = view.findViewById(R.id.row_feedback)
+        rowSignOut = view.findViewById(R.id.row_sign_out)
+        rowDarkMode = view.findViewById(R.id.row_dark_mode)
+        switchDarkMode = view.findViewById(R.id.switch_dark_mode)
+    }
 
-        val avatar = avatarView ?: view.findViewById(R.id.iv_profile_avatar)
+    private fun loadUserProfile() {
+        val user = auth.currentUser ?: return
+        tvProfileName.text = user.displayName ?: "Chef"
+        tvProfileEmail.text = user.email ?: ""
+
         if (user.photoUrl != null) {
-            Glide.with(this).load(user.photoUrl).circleCrop().into(avatar)
+            Glide.with(this).load(user.photoUrl).circleCrop().into(avatarView)
         } else {
-            avatar.setImageResource(R.drawable.ic_person)
+            avatarView.setImageResource(R.drawable.ic_person)
         }
     }
 
-    private fun loadUserStats(view: View) {
+    private fun loadUserStats() {
         val uid = auth.currentUser?.uid ?: return
-        view.findViewById<TextView>(R.id.tv_stat_cooked).text = getTodayCookedCount().toString()
-        view.findViewById<TextView>(R.id.tv_stat_streak).text = "${getCurrentStreak()}🔥"
+        tvStatCooked.text = getTodayCookedCount().toString()
+        tvStatStreak.text = "${getCurrentStreak()}🔥"
 
         db.collection("users").document(uid).get().addOnSuccessListener { doc ->
             if (!doc.exists()) return@addOnSuccessListener
@@ -86,7 +112,7 @@ class ProfileFragment : Fragment() {
         db.collection("users").document(uid)
             .collection("saved_recipes").get()
             .addOnSuccessListener { snap ->
-                view.findViewById<TextView>(R.id.tv_stat_saved).text = snap.size().toString()
+                tvStatSaved.text = snap.size().toString()
             }
     }
 
@@ -135,20 +161,20 @@ class ProfileFragment : Fragment() {
         }.time
     }
 
-    private fun setupClickListeners(view: View) {
-        view.findViewById<View>(R.id.row_edit_profile).setOnClickListener {
+    private fun setupClickListeners() {
+        rowEditProfile.setOnClickListener {
             showEditNameDialog()
         }
 
-        view.findViewById<View>(R.id.row_history).setOnClickListener {
+        rowHistory.setOnClickListener {
             // Navigate to history screen
         }
 
-        view.findViewById<View>(R.id.row_feedback).setOnClickListener {
+        rowFeedback.setOnClickListener {
             showFeedbackDialog()
         }
 
-        view.findViewById<View>(R.id.row_sign_out).setOnClickListener {
+        rowSignOut.setOnClickListener {
             MaterialAlertDialogBuilder(requireContext())
                 .setTitle("Sign out?")
                 .setMessage("You'll need to sign in again to access your saved recipes.")
@@ -162,10 +188,8 @@ class ProfileFragment : Fragment() {
         }
     }
 
-    private fun setupThemeToggle(view: View) {
+    private fun setupThemeToggle() {
         val prefs = requireContext().getSharedPreferences(PREFS_NAME, android.content.Context.MODE_PRIVATE)
-        val switchDarkMode =
-            view.findViewById<com.google.android.material.switchmaterial.SwitchMaterial>(R.id.switch_dark_mode)
         val savedValue = prefs.getBoolean(
             KEY_DARK_MODE_ENABLED,
             AppCompatDelegate.getDefaultNightMode() == AppCompatDelegate.MODE_NIGHT_YES
@@ -180,7 +204,7 @@ class ProfileFragment : Fragment() {
             )
         }
 
-        view.findViewById<View>(R.id.row_dark_mode).setOnClickListener {
+        rowDarkMode.setOnClickListener {
             switchDarkMode.toggle()
         }
     }
@@ -221,7 +245,7 @@ class ProfileFragment : Fragment() {
                     .set(mapOf("name" to newName), SetOptions.merge())
                     .addOnCompleteListener {
                         if (!isAdded) return@addOnCompleteListener
-                        view?.findViewById<TextView>(R.id.tv_profile_name)?.text = newName
+                        tvProfileName.text = newName
                         Toast.makeText(requireContext(), "Name updated", Toast.LENGTH_SHORT).show()
                     }
             }
@@ -286,10 +310,5 @@ class ProfileFragment : Fragment() {
                 ).show()
             }
         }
-    }
-
-    override fun onDestroyView() {
-        avatarView = null
-        super.onDestroyView()
     }
 }

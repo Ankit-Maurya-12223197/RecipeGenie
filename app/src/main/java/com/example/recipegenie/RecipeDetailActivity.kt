@@ -5,6 +5,7 @@ import android.content.Intent
 import android.os.Bundle
 import android.view.MenuItem
 import android.widget.ImageButton
+import android.widget.ImageView
 import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
@@ -17,6 +18,7 @@ import com.example.recipegenie.data.Ingredient
 import com.example.recipegenie.data.Recipe
 import com.example.recipegenie.data.Step
 import com.google.android.material.appbar.MaterialToolbar
+import com.google.android.material.button.MaterialButton
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
 
@@ -34,6 +36,14 @@ class RecipeDetailActivity : AppCompatActivity() {
     private lateinit var btnSave: ImageButton
     private lateinit var rvIngredients: RecyclerView
     private lateinit var rvSteps: RecyclerView
+    private lateinit var toolbar: MaterialToolbar
+    private lateinit var btnStartCooking: MaterialButton
+    private lateinit var btnAskAi: MaterialButton
+    private lateinit var ivHero: ImageView
+    private lateinit var tvCalories: TextView
+    private lateinit var tvProtein: TextView
+    private lateinit var tvCarbs: TextView
+    private lateinit var tvFat: TextView
 
     private var recipe: Recipe? = null
     private var isSaved = false
@@ -45,8 +55,8 @@ class RecipeDetailActivity : AppCompatActivity() {
         db = FirebaseFirestore.getInstance()
         auth = FirebaseAuth.getInstance()
 
-        setupToolbar()
         bindViews()
+        setupToolbar()
         setupClickListeners()
 
         val passedRecipe = intent.getParcelableExtra<Recipe>("recipe")
@@ -61,7 +71,6 @@ class RecipeDetailActivity : AppCompatActivity() {
     }
 
     private fun setupToolbar() {
-        val toolbar = findViewById<MaterialToolbar>(R.id.toolbar)
         setSupportActionBar(toolbar)
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
         supportActionBar?.title = ""
@@ -77,6 +86,14 @@ class RecipeDetailActivity : AppCompatActivity() {
         btnSave = findViewById(R.id.btn_save_recipe)
         rvIngredients = findViewById(R.id.rv_ingredients)
         rvSteps = findViewById(R.id.rv_steps)
+        toolbar = findViewById(R.id.toolbar)
+        btnStartCooking = findViewById(R.id.btn_start_cooking)
+        btnAskAi = findViewById(R.id.btn_ask_ai)
+        ivHero = findViewById(R.id.iv_hero)
+        tvCalories = findViewById(R.id.tv_calories)
+        tvProtein = findViewById(R.id.tv_protein)
+        tvCarbs = findViewById(R.id.tv_carbs)
+        tvFat = findViewById(R.id.tv_fat)
 
         rvIngredients.layoutManager = LinearLayoutManager(this)
         rvSteps.layoutManager = LinearLayoutManager(this)
@@ -85,27 +102,24 @@ class RecipeDetailActivity : AppCompatActivity() {
     private fun setupClickListeners() {
         btnSave.setOnClickListener { toggleSave() }
 
-        findViewById<com.google.android.material.button.MaterialButton>(R.id.btn_start_cooking)
-            .setOnClickListener {
-                recipe?.let { r ->
-                    val timedSteps = normalizeStepsForCooking(r.steps, r.cookTimeMinutes)
-                    startActivity(Intent(this, CookModeActivity::class.java).apply {
-                        putExtra("recipe_id", r.id)
-                        putParcelableArrayListExtra("steps",
-                            ArrayList(timedSteps))
-                    })
-                }
+        btnStartCooking.setOnClickListener {
+            recipe?.let { r ->
+                val timedSteps = normalizeStepsForCooking(r.steps, r.cookTimeMinutes)
+                startActivity(Intent(this, CookModeActivity::class.java).apply {
+                    putExtra("recipe_id", r.id)
+                    putParcelableArrayListExtra("steps", ArrayList(timedSteps))
+                })
             }
+        }
 
-        findViewById<com.google.android.material.button.MaterialButton>(R.id.btn_ask_ai)
-            .setOnClickListener {
-                recipe?.let { r ->
-                    startActivity(Intent(this, AiChefActivity::class.java).apply {
-                        putExtra("recipe_id", r.id)
-                        putExtra("recipe_title", r.title)
-                    })
-                }
+        btnAskAi.setOnClickListener {
+            recipe?.let { r ->
+                startActivity(Intent(this, AiChefActivity::class.java).apply {
+                    putExtra("recipe_id", r.id)
+                    putExtra("recipe_title", r.title)
+                })
             }
+        }
     }
 
     private fun loadRecipeDetails(recipeId: String) {
@@ -139,7 +153,7 @@ class RecipeDetailActivity : AppCompatActivity() {
             .load(r.imageUrl)
             .placeholder(R.drawable.placeholder_recipe)
             .centerCrop()
-            .into(findViewById(R.id.iv_hero))
+            .into(ivHero)
 
         // Load ingredients with match indicators
         val userIngredients = getUserIngredients()
@@ -150,10 +164,10 @@ class RecipeDetailActivity : AppCompatActivity() {
 
         // Set nutrition
         r.nutrition?.let { n ->
-            findViewById<TextView>(R.id.tv_calories).text = n.calories.toString()
-            findViewById<TextView>(R.id.tv_protein).text = "${n.protein}g"
-            findViewById<TextView>(R.id.tv_carbs).text = "${n.carbs}g"
-            findViewById<TextView>(R.id.tv_fat).text = "${n.fat}g"
+            tvCalories.text = n.calories.toString()
+            tvProtein.text = "${n.protein}g"
+            tvCarbs.text = "${n.carbs}g"
+            tvFat.text = "${n.fat}g"
         }
 
         // Check if already saved

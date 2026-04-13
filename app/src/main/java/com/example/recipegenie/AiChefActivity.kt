@@ -30,6 +30,13 @@ class AiChefActivity : AppCompatActivity() {
     private lateinit var etMessage: TextInputEditText
     private lateinit var fabSend: FloatingActionButton
     private lateinit var llTyping: LinearLayout
+    private lateinit var chipRecipeContext: Chip
+    private lateinit var btnBackChat: View
+    private lateinit var llSuggestions: View
+    private lateinit var chipSubstitute: Chip
+    private lateinit var chipLessSpicy: Chip
+    private lateinit var chipNutrition: Chip
+    private lateinit var chipDouble: Chip
 
     private val httpClient = OkHttpClient()
     private var recipeTitle = ""
@@ -58,7 +65,14 @@ class AiChefActivity : AppCompatActivity() {
         etMessage = findViewById(R.id.et_message)
         fabSend = findViewById(R.id.fab_send)
         llTyping = findViewById(R.id.ll_typing)
-        findViewById<Chip>(R.id.chip_recipe_context).text = recipeTitle
+        chipRecipeContext = findViewById(R.id.chip_recipe_context)
+        btnBackChat = findViewById(R.id.btn_back_chat)
+        llSuggestions = findViewById(R.id.ll_suggestions)
+        chipSubstitute = findViewById(R.id.chip_substitute)
+        chipLessSpicy = findViewById(R.id.chip_less_spicy)
+        chipNutrition = findViewById(R.id.chip_nutrition)
+        chipDouble = findViewById(R.id.chip_double)
+        chipRecipeContext.text = recipeTitle
     }
 
     private fun setupRecyclerView() {
@@ -72,7 +86,7 @@ class AiChefActivity : AppCompatActivity() {
     }
 
     private fun setupClickListeners() {
-        findViewById<View>(R.id.btn_back_chat).setOnClickListener { finish() }
+        btnBackChat.setOnClickListener { finish() }
         fabSend.setOnClickListener { sendMessage() }
         etMessage.setOnEditorActionListener { _, actionId, _ ->
             if (actionId == EditorInfo.IME_ACTION_SEND) { sendMessage(); true } else false
@@ -81,13 +95,16 @@ class AiChefActivity : AppCompatActivity() {
 
     private fun setupSuggestionChips() {
         val suggestions = mapOf(
-            R.id.chip_substitute  to "What can I substitute for cream in $recipeTitle?",
-            R.id.chip_less_spicy  to "How do I make $recipeTitle less spicy?",
-            R.id.chip_nutrition   to "What is the nutritional breakdown of $recipeTitle?",
-            R.id.chip_double      to "How do I double the recipe for $recipeTitle?"
+            chipSubstitute to "What can I substitute for cream in $recipeTitle?",
+            chipLessSpicy to "How do I make $recipeTitle less spicy?",
+            chipNutrition to "What is the nutritional breakdown of $recipeTitle?",
+            chipDouble to "How do I double the recipe for $recipeTitle?"
         )
-        suggestions.forEach { (id, q) ->
-            findViewById<Chip>(id)?.setOnClickListener { etMessage.setText(q); sendMessage() }
+        suggestions.forEach { (chip, question) ->
+            chip.setOnClickListener {
+                etMessage.setText(question)
+                sendMessage()
+            }
         }
     }
 
@@ -104,7 +121,7 @@ class AiChefActivity : AppCompatActivity() {
         addUserMessage(text)
         etMessage.setText("")
         hideKeyboard()
-        findViewById<View>(R.id.ll_suggestions).visibility = View.GONE
+        llSuggestions.visibility = View.GONE
         showTyping(true)
         callGeminiApi(text)
     }

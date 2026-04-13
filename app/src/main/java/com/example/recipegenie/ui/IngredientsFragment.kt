@@ -40,6 +40,7 @@ class IngredientsFragment : Fragment() {
     private lateinit var llEmptyState: LinearLayout
     private lateinit var llResultsHeader: LinearLayout
     private lateinit var tvResultsCount: TextView
+    private lateinit var btnAddIngredient: MaterialButton
 
     private val resultsAdapter = IngredientResultAdapter(mutableListOf()) { recipe ->
         startActivity(Intent(requireContext(), RecipeDetailActivity::class.java).apply {
@@ -70,11 +71,11 @@ class IngredientsFragment : Fragment() {
         llEmptyState = view.findViewById(R.id.ll_empty_state)
         llResultsHeader = view.findViewById(R.id.ll_results_header)
         tvResultsCount = view.findViewById(R.id.tv_results_count)
+        btnAddIngredient = view.findViewById(R.id.btn_add_ingredient)
     }
 
     private fun setupClickListeners() {
-        view?.findViewById<MaterialButton>(R.id.btn_add_ingredient)
-            ?.setOnClickListener { addIngredient() }
+        btnAddIngredient.setOnClickListener { addIngredient() }
 
         etIngredient.setOnEditorActionListener { _, actionId, event ->
             if (actionId == EditorInfo.IME_ACTION_DONE ||
@@ -138,33 +139,28 @@ class IngredientsFragment : Fragment() {
 
     private fun searchRecipes() {
         showLoading(true)
+
         viewLifecycleOwner.lifecycleScope.launch {
-            runCatching {
+            val recipes = runCatching {
                 GeminiRecipeRepository.generateRecipesFromIngredients(ingredientsList)
-            }.onSuccess { recipes ->
-                if (!isAdded) return@onSuccess
-                showLoading(false)
-                displayResults(recipes)
-                if (recipes.isEmpty()) {
-                    Toast.makeText(
-                        requireContext(),
-                        "No recipes generated. Try different ingredients.",
-                        Toast.LENGTH_SHORT
-                    ).show()
-                }
-            }.onFailure { error ->
-                if (!isAdded) return@onFailure
-                showLoading(false)
-                displayResults(emptyList())
+            }.getOrElse {
+                emptyList()
+            }
+
+            if (!isAdded) return@launch
+
+            showLoading(false)
+            displayResults(recipes)
+
+            if (recipes.isEmpty()) {
                 Toast.makeText(
                     requireContext(),
-                    error.localizedMessage ?: "Gemini recipe generation failed.",
-                    Toast.LENGTH_LONG
+                    "No recipe found for selected ingredients",
+                    Toast.LENGTH_SHORT
                 ).show()
             }
         }
     }
-
     private fun displayResults(recipes: List<Recipe>) {
         if (recipes.isEmpty()) {
             llEmptyState.visibility = View.VISIBLE

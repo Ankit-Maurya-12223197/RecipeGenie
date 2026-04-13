@@ -51,6 +51,9 @@ class SignUpActivity : AppCompatActivity() {
     private lateinit var progressSignup: CircularProgressIndicator
     private lateinit var progressPasswordStrength: LinearProgressIndicator
     private lateinit var tvPasswordStrength: TextView
+    private lateinit var tvTerms: TextView
+    private lateinit var btnBack: View
+    private lateinit var tvSignIn: TextView
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -90,19 +93,18 @@ class SignUpActivity : AppCompatActivity() {
         progressSignup = findViewById(R.id.progress_signup)
         progressPasswordStrength = findViewById(R.id.progress_password_strength)
         tvPasswordStrength = findViewById(R.id.tv_password_strength)
+        tvTerms = findViewById(R.id.tv_terms_text)
+        btnBack = findViewById(R.id.btn_back)
+        tvSignIn = findViewById(R.id.tv_sign_in)
     }
 
     private fun setupTermsText() {
-        // Render HTML-formatted terms text on the checkbox's sibling TextView
-        val tvTerms = findViewById<TextView>(R.id.tv_terms_text)
-        tvTerms?.text = Html.fromHtml(
+        tvTerms.text = Html.fromHtml(
             "I agree to the <font color='#F97316'><b>Terms of Service</b></font> " +
                     "and <font color='#F97316'><b>Privacy Policy</b></font>",
             Html.FROM_HTML_MODE_LEGACY
         )
-        tvTerms?.setOnClickListener {
-            // Optionally open terms URL
-        }
+        tvTerms.setOnClickListener { }
     }
 
     // ── Password Strength ─────────────────────────────────────────────────────
@@ -147,22 +149,14 @@ class SignUpActivity : AppCompatActivity() {
     // ── Click Listeners ───────────────────────────────────────────────────────
 
     private fun setupClickListeners() {
-        // Back
-        findViewById<View>(R.id.btn_back).setOnClickListener { finish() }
-
-        // Create account with email
+        btnBack.setOnClickListener { finish() }
         btnCreateAccount.setOnClickListener { attemptSignUp() }
 
-        // Google sign up
         btnGoogleSignUp.setOnClickListener {
             startActivityForResult(googleSignInClient.signInIntent, RC_SIGN_IN)
         }
 
-        // Navigate back to log
-        findViewById<TextView>(R.id.tv_sign_in).setOnClickListener {
-            // Go back to LoginActivity — don't stack a new one
-            finish()
-        }
+        tvSignIn.setOnClickListener { finish() }
     }
 
     // ── Sign Up Logic ─────────────────────────────────────────────────────────
