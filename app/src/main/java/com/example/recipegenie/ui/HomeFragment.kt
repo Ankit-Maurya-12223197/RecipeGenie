@@ -16,6 +16,7 @@ import com.example.recipegenie.adapters.QuickMealAdapter
 import com.example.recipegenie.adapters.RecipeCardAdapter
 import com.example.recipegenie.data.Recipe
 import com.example.recipegenie.data.SpoonacularRepository
+import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.google.android.material.chip.ChipGroup
 import com.google.android.material.imageview.ShapeableImageView
 import com.google.firebase.auth.FirebaseAuth
@@ -52,6 +53,7 @@ class HomeFragment : Fragment() {
         bindViews(view)
         setupGreeting()
         setupRecyclerViews()
+        setupClickListeners()
         setupCategoryChips()
         loadRecipes("all")
     }
@@ -105,6 +107,14 @@ class HomeFragment : Fragment() {
             layoutManager = LinearLayoutManager(context)
             adapter = quickMealAdapter
             isNestedScrollingEnabled = false
+        }
+    }
+
+    private fun setupClickListeners() {
+        ivAvatar.setOnClickListener {
+            requireActivity()
+                .findViewById<BottomNavigationView>(R.id.bottom_nav)
+                .selectedItemId = R.id.nav_profile
         }
     }
 
