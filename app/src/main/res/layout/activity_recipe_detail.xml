@@ -324,7 +324,7 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="horizontal"
+        android:orientation="vertical"
         android:layout_gravity="bottom"
         android:background="@color/white"
         android:paddingHorizontal="16dp"
@@ -334,19 +334,10 @@
         <com.google.android.material.button.MaterialButton
             android:id="@+id/btn_start_cooking"
             style="@style/Widget.RecipeGenie.Button.Primary"
-            android:layout_width="0dp"
+            android:layout_width="match_parent"
             android:layout_height="52dp"
-            android:layout_weight="2"
-            android:layout_marginEnd="12dp"
+            android:layout_weight="0"
             android:text="@string/start_cooking" />
-
-        <com.google.android.material.button.MaterialButton
-            android:id="@+id/btn_ask_ai"
-            style="@style/Widget.RecipeGenie.Button.Outline"
-            android:layout_width="0dp"
-            android:layout_height="52dp"
-            android:layout_weight="1"
-            android:text="@string/ask_ai_chef" />
 
     </LinearLayout>
 

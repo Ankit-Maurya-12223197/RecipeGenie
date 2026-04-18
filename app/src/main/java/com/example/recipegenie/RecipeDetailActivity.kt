@@ -38,7 +38,6 @@ class RecipeDetailActivity : AppCompatActivity() {
     private lateinit var rvSteps: RecyclerView
     private lateinit var toolbar: MaterialToolbar
     private lateinit var btnStartCooking: MaterialButton
-    private lateinit var btnAskAi: MaterialButton
     private lateinit var ivHero: ImageView
     private lateinit var tvCalories: TextView
     private lateinit var tvProtein: TextView
@@ -88,7 +87,6 @@ class RecipeDetailActivity : AppCompatActivity() {
         rvSteps = findViewById(R.id.rv_steps)
         toolbar = findViewById(R.id.toolbar)
         btnStartCooking = findViewById(R.id.btn_start_cooking)
-        btnAskAi = findViewById(R.id.btn_ask_ai)
         ivHero = findViewById(R.id.iv_hero)
         tvCalories = findViewById(R.id.tv_calories)
         tvProtein = findViewById(R.id.tv_protein)
@@ -108,15 +106,6 @@ class RecipeDetailActivity : AppCompatActivity() {
                 startActivity(Intent(this, CookModeActivity::class.java).apply {
                     putExtra("recipe_id", r.id)
                     putParcelableArrayListExtra("steps", ArrayList(timedSteps))
-                })
-            }
-        }
-
-        btnAskAi.setOnClickListener {
-            recipe?.let { r ->
-                startActivity(Intent(this, AiChefActivity::class.java).apply {
-                    putExtra("recipe_id", r.id)
-                    putExtra("recipe_title", r.title)
                 })
             }
         }

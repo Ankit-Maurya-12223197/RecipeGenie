@@ -267,9 +267,6 @@ class SignUpActivity : AppCompatActivity() {
             "uid" to uid,
             "name" to name,
             "email" to email,
-            "dietType" to "",
-            "cuisines" to emptyList<String>(),
-            "allergies" to emptyList<String>(),
             "recipesCooked" to 0,
             "dayStreak" to 0,
             "createdAt" to System.currentTimeMillis()
