@@ -79,7 +79,7 @@ object GeminiRecipeRepository {
             .distinct()
     }
 
-    private fun expandRecipeIdea(
+    private suspend fun expandRecipeIdea(
         ingredients: List<String>,
         recipeIdea: String,
         index: Int,
@@ -140,8 +140,10 @@ object GeminiRecipeRepository {
             .removeSuffix("```")
             .trim()
 
-        return parseRecipeJson(json, index)
+        val recipe = parseRecipeJson(json, index)
             ?: error("Gemini returned invalid recipe JSON")
+        val imageUrl = SpoonacularRepository.findImageUrlByTitle(recipe.title)
+        return recipe.copy(imageUrl = imageUrl)
     }
 
     private fun parseRecipeJson(jsonText: String, index: Int): Recipe? {

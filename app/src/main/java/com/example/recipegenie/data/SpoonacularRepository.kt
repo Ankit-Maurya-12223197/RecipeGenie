@@ -10,6 +10,7 @@ object SpoonacularRepository {
 
     private const val BASE_URL = "https://api.spoonacular.com/recipes/random"
     private const val FIND_BY_INGREDIENTS_URL = "https://api.spoonacular.com/recipes/findByIngredients"
+    private const val COMPLEX_SEARCH_URL = "https://api.spoonacular.com/recipes/complexSearch"
     private val client = OkHttpClient()
 
     suspend fun getHomeRecipes(category: String): List<Recipe> {
@@ -76,6 +77,32 @@ object SpoonacularRepository {
         }
     }
 
+    suspend fun findImageUrlByTitle(title: String): String {
+        val normalizedTitle = title.trim()
+        if (normalizedTitle.isBlank()) return ""
+
+        val apiKey = BuildConfig.SPOONACULAR_API_KEY
+        if (apiKey.isBlank()) return ""
+
+        return runCatching {
+            val url = buildString {
+                append(COMPLEX_SEARCH_URL)
+                append("?query=").append(java.net.URLEncoder.encode(normalizedTitle, "UTF-8"))
+                append("&number=1")
+                append("&addRecipeInformation=true")
+                append("&apiKey=").append(apiKey)
+            }
+
+            val request = Request.Builder().url(url).build()
+            client.newCall(request).execute().use { response ->
+                if (!response.isSuccessful) {
+                    error("Title image search failed with ${response.code}")
+                }
+                parseFirstImageUrl(response.body?.string().orEmpty())
+            }
+        }.getOrDefault("")
+    }
+
     private fun parseRecipes(json: String): List<Recipe> {
         val root = JSONObject(json)
         val items = root.optJSONArray("recipes") ?: return emptyList()
@@ -130,6 +157,13 @@ object SpoonacularRepository {
                 )
             }
         }
+    }
+
+    private fun parseFirstImageUrl(json: String): String {
+        val root = JSONObject(json)
+        val results = root.optJSONArray("results") ?: return ""
+        val first = results.optJSONObject(0) ?: return ""
+        return first.optString("image")
     }
 
     private fun parseCuisine(item: JSONObject): String {

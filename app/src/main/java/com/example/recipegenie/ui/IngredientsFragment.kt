@@ -31,6 +31,7 @@ import kotlinx.coroutines.launch
 class IngredientsFragment : Fragment() {
 
     private val ingredientsList = mutableListOf<String>()
+    private var isSearching = false
 
     private lateinit var etIngredient: TextInputEditText
     private lateinit var chipGroupIngredients: ChipGroup
@@ -85,6 +86,7 @@ class IngredientsFragment : Fragment() {
         }
 
         btnFindRecipes.setOnClickListener {
+            if (isSearching) return@setOnClickListener
             if (ingredientsList.isEmpty()) {
                 etIngredient.error = "Add at least one ingredient"
                 return@setOnClickListener
@@ -138,6 +140,7 @@ class IngredientsFragment : Fragment() {
     }
 
     private fun searchRecipes() {
+        if (isSearching) return
         showLoading(true)
 
         viewLifecycleOwner.lifecycleScope.launch {
@@ -176,7 +179,10 @@ class IngredientsFragment : Fragment() {
     }
 
     private fun showLoading(show: Boolean) {
+        isSearching = show
         progressSearch.visibility = if (show) View.VISIBLE else View.GONE
         btnFindRecipes.isEnabled = !show
+        btnFindRecipes.isClickable = !show
+        btnFindRecipes.alpha = if (show) 0.6f else 1f
     }
 }
