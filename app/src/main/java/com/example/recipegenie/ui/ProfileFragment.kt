@@ -51,7 +51,6 @@ class ProfileFragment : Fragment() {
     private lateinit var tvStatStreak: TextView
     private lateinit var tvStatSaved: TextView
     private lateinit var rowEditProfile: View
-    private lateinit var rowHistory: View
     private lateinit var rowFeedback: View
     private lateinit var rowSignOut: View
     private lateinit var rowDarkMode: View
@@ -82,7 +81,6 @@ class ProfileFragment : Fragment() {
         tvStatStreak = view.findViewById(R.id.tv_stat_streak)
         tvStatSaved = view.findViewById(R.id.tv_stat_saved)
         rowEditProfile = view.findViewById(R.id.row_edit_profile)
-        rowHistory = view.findViewById(R.id.row_history)
         rowFeedback = view.findViewById(R.id.row_feedback)
         rowSignOut = view.findViewById(R.id.row_sign_out)
         rowDarkMode = view.findViewById(R.id.row_dark_mode)
@@ -164,10 +162,6 @@ class ProfileFragment : Fragment() {
     private fun setupClickListeners() {
         rowEditProfile.setOnClickListener {
             showEditNameDialog()
-        }
-
-        rowHistory.setOnClickListener {
-            // Navigate to history screen
         }
 
         rowFeedback.setOnClickListener {

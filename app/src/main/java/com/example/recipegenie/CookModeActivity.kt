@@ -142,11 +142,13 @@ class CookModeActivity : AppCompatActivity() {
             totalTimeMillis = durationSeconds * 1000L
             timeLeftMillis = totalTimeMillis
             updateTimerDisplay()
+            tvTimerLabel.text = getString(R.string.tap_to_start)
             timerProgress.visibility = View.VISIBLE
+            timerProgress.setProgressCompat(100, false)
         } else {
             tvTimer.text = "--"
             tvTimerLabel.text = "No timer"
-            timerProgress.progress = 0
+            timerProgress.setProgressCompat(0, false)
         }
 
         // Update step dots
@@ -167,7 +169,7 @@ class CookModeActivity : AppCompatActivity() {
                 timeLeftMillis = millisUntilFinished
                 updateTimerDisplay()
                 val progress = ((timeLeftMillis.toFloat() / totalTimeMillis) * 100).toInt()
-                timerProgress.progress = progress
+                timerProgress.setProgressCompat(progress, false)
             }
 
             @RequiresApi(Build.VERSION_CODES.O)
@@ -176,7 +178,7 @@ class CookModeActivity : AppCompatActivity() {
                 timeLeftMillis = 0
                 tvTimer.text = "Done!"
                 tvTimerLabel.text = "Timer complete"
-                timerProgress.progress = 0
+                timerProgress.setProgressCompat(0, false)
                 // Vibrate device
                 val vibrator = getSystemService(android.os.Vibrator::class.java)
                 vibrator?.vibrate(android.os.VibrationEffect.createWaveform(
