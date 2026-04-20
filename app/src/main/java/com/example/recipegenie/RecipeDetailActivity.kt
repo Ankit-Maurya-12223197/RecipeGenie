@@ -130,6 +130,8 @@ class RecipeDetailActivity : AppCompatActivity() {
     private fun displayRecipe(r: Recipe) {
         val normalizedSteps = normalizeStepsForCooking(r.steps, r.cookTimeMinutes)
         recipe = r.copy(steps = normalizedSteps)
+        isSaved = false
+        updateSaveIcon()
 
         tvTitle.text = r.title
         tvCookTime.text = r.cookTimeMinutes.toString()
@@ -214,7 +216,11 @@ class RecipeDetailActivity : AppCompatActivity() {
     }
 
     private fun checkIfSaved(recipeId: String) {
-        val uid = auth.currentUser?.uid ?: return
+        val uid = auth.currentUser?.uid ?: run {
+            isSaved = false
+            updateSaveIcon()
+            return
+        }
         db.collection("users").document(uid)
             .collection("saved_recipes").document(recipeId)
             .get()
